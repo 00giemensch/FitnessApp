@@ -38,6 +38,37 @@ class ExerciseStatisticsViewController: UIViewController {
         return label
     }()
     
+    private let periodSegmentedControl: UISegmentedControl = {
+        let items = ChartPeriod.allCases.map { $0.title }
+        let control = UISegmentedControl(items: items)
+        control.translatesAutoresizingMaskIntoConstraints = false
+        control.selectedSegmentIndex = ChartPeriod.week.rawValue
+        control.backgroundColor = .systemGray6
+        return control
+    }()
+    
+    private let averageLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 16, weight: .semibold)
+        return label
+    }()
+    
+    private let periodLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 13)
+        label.textColor = .secondaryLabel
+        return label
+    }()
+    
+    private let chartView: BestResultChartView = {
+        let chart = BestResultChartView()
+        chart.translatesAutoresizingMaskIntoConstraints = false
+        chart.heightAnchor.constraint(equalToConstant: 350).isActive = true
+        return chart
+    }()
+    
     private let addGoalButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -84,11 +115,16 @@ class ExerciseStatisticsViewController: UIViewController {
         contentView.addSubview(totalRepetitionsLabel)
         contentView.addSubview(bestResultLabel)
         contentView.addSubview(weeklyAverageLabel)
+        contentView.addSubview(periodSegmentedControl)
+        contentView.addSubview(chartView)
+        contentView.addSubview(averageLabel)
+        contentView.addSubview(periodLabel)
         contentView.addSubview(addGoalButton)
         
         setupConstraints()
         
         addGoalButton.addTarget(self, action: #selector(addGoalTapped), for: .touchUpInside)
+        periodSegmentedControl.addTarget(self, action: #selector(periodChanged), for: .valueChanged)
     }
     
     private func setupConstraints() {
@@ -116,7 +152,23 @@ class ExerciseStatisticsViewController: UIViewController {
             weeklyAverageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             weeklyAverageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
-            addGoalButton.topAnchor.constraint(equalTo: weeklyAverageLabel.bottomAnchor, constant: 30),
+            periodSegmentedControl.topAnchor.constraint(equalTo: weeklyAverageLabel.bottomAnchor, constant: 30),
+            periodSegmentedControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            periodSegmentedControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            
+            chartView.topAnchor.constraint(equalTo: periodSegmentedControl.bottomAnchor, constant: 16),
+            chartView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            chartView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            
+            averageLabel.topAnchor.constraint(equalTo: chartView.bottomAnchor, constant: 16),
+            averageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            averageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            
+            periodLabel.topAnchor.constraint(equalTo: averageLabel.bottomAnchor, constant: 4),
+            periodLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            periodLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            
+            addGoalButton.topAnchor.constraint(equalTo: periodLabel.bottomAnchor, constant: 30),
             addGoalButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             addGoalButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             addGoalButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
@@ -160,6 +212,21 @@ class ExerciseStatisticsViewController: UIViewController {
         }
         
         weeklyAverageLabel.text = "Среднее за неделю: \(weeklyAverage)"
+        
+        chartView.updateData(workouts: workouts)
+        updateChartLabels()
+    }
+    
+    private func updateChartLabels() {
+        let average = chartView.getAverageValue()
+        averageLabel.text = "В среднем: \(average)"
+        periodLabel.text = chartView.getPeriodString()
+    }
+    
+    @objc private func periodChanged() {
+        guard let period = ChartPeriod(rawValue: periodSegmentedControl.selectedSegmentIndex) else { return }
+        chartView.setPeriod(period)
+        updateChartLabels()
     }
     
     @objc private func addGoalTapped() {

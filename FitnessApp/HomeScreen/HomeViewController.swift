@@ -92,6 +92,12 @@ class HomeViewController: UIViewController {
     private func setupActions() {
         startWorkoutButton.addTarget(self, action: #selector(startWorkoutTapped), for: .touchUpInside)
         statisticsButton.addTarget(self, action: #selector(statisticsTapped), for: .touchUpInside)
+        exercisesButton.addTarget(self, action: #selector(exercisesTapped), for: .touchUpInside)
+    }
+    
+    @objc private func exercisesTapped() {
+        let exercisesVC = WgerExercisesViewController()
+        navigationController?.pushViewController(exercisesVC, animated: true)
     }
     
     @objc private func startWorkoutTapped() {

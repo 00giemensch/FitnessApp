@@ -1,0 +1,263 @@
+import UIKit
+
+class WgerExerciseDetailViewController: UIViewController {
+    
+    private let exerciseId: Int
+    private var exercise: WgerExercise?
+    private var exerciseInfo: WgerExerciseInfo?
+    private var descriptionTopConstraint: NSLayoutConstraint?
+    
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let nameLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 16)
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .systemGray6
+        imageView.layer.cornerRadius = 12
+        imageView.clipsToBounds = true
+        imageView.image = UIImage(systemName: "figure.strengthtraining.traditional")
+        imageView.tintColor = .systemGray3
+        return imageView
+    }()
+    
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
+    init(exerciseId: Int) {
+        self.exerciseId = exerciseId
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        loadExerciseDetails()
+    }
+    
+    private func setupUI() {
+        view.backgroundColor = .systemBackground
+        title = "Инструкция"
+        
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(imageView)
+        view.addSubview(activityIndicator)
+        
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        descriptionTopConstraint = descriptionLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20)
+        
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            
+            imageView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 20),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            imageView.heightAnchor.constraint(equalToConstant: 200),
+            
+            descriptionTopConstraint!,
+            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    
+    private func loadExerciseDetails() {
+        activityIndicator.startAnimating()
+        
+        WgerService.shared.fetchExerciseInfo(exerciseId: exerciseId) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.activityIndicator.stopAnimating()
+                
+                switch result {
+                case .success(let info):
+                    self?.exerciseInfo = info
+                    self?.exercise = WgerExercise(from: info)
+                    self?.configureContent()
+                case .failure(let error):
+                    print("❌ Error loading exercise info: \(error.localizedDescription)")
+                    WgerService.shared.fetchExerciseDetails(exerciseId: self?.exerciseId ?? 0) { result in
+                        switch result {
+                        case .success(let exercise):
+                            self?.exercise = exercise
+                            self?.configureContent()
+                        case .failure:
+                            self?.showError(message: "Не удалось загрузить упражнение: \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private func configureContent() {
+        guard let exercise = exercise else { return }
+        
+        if let name = exercise.name, !name.isEmpty {
+            nameLabel.text = name
+        } else {
+            nameLabel.text = "Упражнение #\(exercise.id)"
+        }
+        
+        var descriptionText = ""
+        
+        if let description = exercise.description, !description.isEmpty {
+            let cleanDescription = description.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
+            descriptionText = cleanDescription
+        }
+        
+        var additionalInfo: [String] = []
+        
+        if let info = exerciseInfo {
+            if let category = info.category {
+                additionalInfo.append("Категория: \(category.name)")
+            }
+            if let muscles = info.muscles, !muscles.isEmpty {
+                let muscleNames = muscles.map { $0.name }.joined(separator: ", ")
+                additionalInfo.append("Основные мышцы: \(muscleNames)")
+            }
+            if let musclesSecondary = info.musclesSecondary, !musclesSecondary.isEmpty {
+                let muscleNames = musclesSecondary.map { $0.name }.joined(separator: ", ")
+                additionalInfo.append("Второстепенные мышцы: \(muscleNames)")
+            }
+            if let equipment = info.equipment, !equipment.isEmpty {
+                let equipmentNames = equipment.map { $0.name }.joined(separator: ", ")
+                additionalInfo.append("Оборудование: \(equipmentNames)")
+            }
+        } else {
+            if let category = exercise.category {
+                additionalInfo.append("Категория: #\(category)")
+            }
+            if let muscles = exercise.muscles, !muscles.isEmpty {
+                additionalInfo.append("Мышцы: \(muscles.map { String($0) }.joined(separator: ", "))")
+            }
+            if let equipment = exercise.equipment, !equipment.isEmpty {
+                additionalInfo.append("Оборудование: \(equipment.map { String($0) }.joined(separator: ", "))")
+            }
+        }
+        
+        if !descriptionText.isEmpty {
+            if !additionalInfo.isEmpty {
+                descriptionText += "\n\n" + additionalInfo.joined(separator: "\n")
+            }
+            descriptionLabel.text = descriptionText
+        } else if !additionalInfo.isEmpty {
+            descriptionLabel.text = additionalInfo.joined(separator: "\n")
+        } else {
+            descriptionLabel.text = "Информация об упражнении отсутствует"
+        }
+        
+        descriptionLabel.isHidden = false
+        
+        if let images = exercise.images, !images.isEmpty {
+            let mainImage = images.first(where: { $0.isMain == true }) ?? images.first
+            if let mainImage = mainImage {
+                let imageURLString = mainImage.image.hasPrefix("http") ? mainImage.image : "https://wger.de\(mainImage.image)"
+                if let imageURL = URL(string: imageURLString) {
+                    imageView.isHidden = false
+                    loadImage(from: imageURL)
+                } else {
+                    showPlaceholderImage()
+                }
+            } else {
+                showPlaceholderImage()
+            }
+        } else {
+            showPlaceholderImage()
+        }
+    }
+    
+    private func loadImage(from url: URL) {
+        WgerService.shared.fetchExerciseImage(imageURL: url.absoluteString) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let imageData):
+                    if let image = UIImage(data: imageData) {
+                        self?.imageView.image = image
+                        self?.imageView.tintColor = nil
+                        self?.imageView.contentMode = .scaleAspectFit
+                    } else {
+                        self?.showPlaceholderImage()
+                    }
+                case .failure:
+                    self?.showPlaceholderImage()
+                }
+            }
+        }
+    }
+    
+    private func showPlaceholderImage() {
+        imageView.isHidden = false
+        imageView.image = UIImage(systemName: "figure.strengthtraining.traditional")
+        imageView.tintColor = .systemGray3
+        imageView.contentMode = .center
+        imageView.backgroundColor = .systemGray6
+        if descriptionTopConstraint?.isActive == true {
+            descriptionTopConstraint?.isActive = false
+        }
+        descriptionTopConstraint = descriptionLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20)
+        descriptionTopConstraint?.isActive = true
+    }
+    
+    private func showError(message: String) {
+        let alert = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "ОК", style: .default))
+        present(alert, animated: true)
+    }
+}
+
