@@ -28,6 +28,7 @@
 		678296842EC902360056D7AA /* WgerExerciseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296812EC902360056D7AA /* WgerExerciseDetailViewController.swift */; };
 		678296852EC902360056D7AA /* WgerExercisesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296822EC902360056D7AA /* WgerExercisesViewController.swift */; };
 		678296862EC902360056D7AA /* WgerExerciseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296832EC902360056D7AA /* WgerExerciseTableViewCell.swift */; };
+		678296892EC9040B0056D7AA /* WgerCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782968A2EC9040C0056D7AA /* WgerCategoryCollectionViewCell.swift */; };
 		678296882EC9040A0056D7AA /* WgerCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296872EC9040A0056D7AA /* WgerCache.swift */; };
 		5EEE432D7C964AD0B25BBF8764DBCC73 /* BestResultChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */; };
 /* End PBXBuildFile section */
@@ -56,6 +57,7 @@
 		678296812EC902360056D7AA /* WgerExerciseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerExerciseDetailViewController.swift; sourceTree = "<group>"; };
 		678296822EC902360056D7AA /* WgerExercisesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerExercisesViewController.swift; sourceTree = "<group>"; };
 		678296832EC902360056D7AA /* WgerExerciseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerExerciseTableViewCell.swift; sourceTree = "<group>"; };
+		6782968A2EC9040C0056D7AA /* WgerCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		678296872EC9040A0056D7AA /* WgerCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerCache.swift; sourceTree = "<group>"; };
 		5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestResultChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -148,6 +150,7 @@
 				678296812EC902360056D7AA /* WgerExerciseDetailViewController.swift */,
 				678296822EC902360056D7AA /* WgerExercisesViewController.swift */,
 				678296832EC902360056D7AA /* WgerExerciseTableViewCell.swift */,
+				6782968A2EC9040C0056D7AA /* WgerCategoryCollectionViewCell.swift */,
 				678296532EC8E2680056D7AA /* LocalExercisesViewController.swift */,
 				678296522EC8E2680056D7AA /* LocalExercise.swift */,
 			);
@@ -250,6 +253,7 @@
 				678296842EC902360056D7AA /* WgerExerciseDetailViewController.swift in Sources */,
 				678296852EC902360056D7AA /* WgerExercisesViewController.swift in Sources */,
 				678296862EC902360056D7AA /* WgerExerciseTableViewCell.swift in Sources */,
+				678296892EC9040B0056D7AA /* WgerCategoryCollectionViewCell.swift in Sources */,
 				678296882EC9040A0056D7AA /* WgerCache.swift in Sources */,
 				6782965F2EC8E2680056D7AA /* AppDelegate.swift in Sources */,
 				678296602EC8E2680056D7AA /* SceneDelegate.swift in Sources */,
