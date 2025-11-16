@@ -22,6 +22,7 @@ class BestResultChartView: UIView {
     
     private var allWorkouts: [Workout] = []
     private var dataPoints: [(date: Date, value: Int)] = []
+    private var periodWorkouts: [Workout] = []
     private var currentPeriod: ChartPeriod = .week
     
     override init(frame: CGRect) {
@@ -37,8 +38,7 @@ class BestResultChartView: UIView {
     private func setupView() {
         backgroundColor = .systemBackground
         layer.cornerRadius = 12
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.separator.cgColor
+        clipsToBounds = true
     }
     
     func updateData(workouts: [Workout]) {
@@ -57,12 +57,8 @@ class BestResultChartView: UIView {
         return currentPeriod
     }
     
-    func getAverageValue() -> Int {
-        guard !dataPoints.isEmpty else { return 0 }
-        let nonZeroPoints = dataPoints.filter { $0.value > 0 }
-        guard !nonZeroPoints.isEmpty else { return 0 }
-        let sum = nonZeroPoints.reduce(0) { $0 + $1.value }
-        return sum / nonZeroPoints.count
+    func getTotalValue() -> Int {
+        return periodWorkouts.reduce(0) { $0 + $1.totalRepetitions }
     }
     
     func getPeriodString() -> String {
@@ -114,6 +110,7 @@ class BestResultChartView: UIView {
         case .day:
             startDate = calendar.startOfDay(for: now)
             endDate = calendar.date(byAdding: .day, value: 1, to: startDate) ?? startDate
+            periodWorkouts = allWorkouts.filter { calendar.startOfDay(for: $0.date) >= startDate && calendar.startOfDay(for: $0.date) < endDate }
             dataPoints = generateDataPointsForRange(from: startDate, to: endDate, calendar: calendar)
             
         case .week:
@@ -121,6 +118,7 @@ class BestResultChartView: UIView {
             startDate = calendar.startOfDay(for: startDate)
             endDate = calendar.date(byAdding: .day, value: 1, to: now) ?? now
             endDate = calendar.startOfDay(for: endDate)
+            periodWorkouts = allWorkouts.filter { calendar.startOfDay(for: $0.date) >= startDate && calendar.startOfDay(for: $0.date) < endDate }
             dataPoints = generateDataPointsForRange(from: startDate, to: endDate, calendar: calendar)
             
         case .month:
@@ -128,6 +126,7 @@ class BestResultChartView: UIView {
             startDate = calendar.startOfDay(for: startDate)
             endDate = calendar.date(byAdding: .day, value: 1, to: now) ?? now
             endDate = calendar.startOfDay(for: endDate)
+            periodWorkouts = allWorkouts.filter { calendar.startOfDay(for: $0.date) >= startDate && calendar.startOfDay(for: $0.date) < endDate }
             dataPoints = generateDataPointsForRange(from: startDate, to: endDate, calendar: calendar)
             
         case .sixMonths:
@@ -135,6 +134,7 @@ class BestResultChartView: UIView {
             startDate = calendar.startOfDay(for: startDate)
             endDate = calendar.date(byAdding: .day, value: 1, to: now) ?? now
             endDate = calendar.startOfDay(for: endDate)
+            periodWorkouts = allWorkouts.filter { calendar.startOfDay(for: $0.date) >= startDate && calendar.startOfDay(for: $0.date) < endDate }
             dataPoints = generateDataPointsForRange(from: startDate, to: endDate, calendar: calendar)
             
         case .year:
@@ -142,6 +142,7 @@ class BestResultChartView: UIView {
             startDate = calendar.startOfDay(for: startDate)
             endDate = calendar.date(byAdding: .day, value: 1, to: now) ?? now
             endDate = calendar.startOfDay(for: endDate)
+            periodWorkouts = allWorkouts.filter { calendar.startOfDay(for: $0.date) >= startDate && calendar.startOfDay(for: $0.date) < endDate }
             dataPoints = generateDataPointsForRange(from: startDate, to: endDate, calendar: calendar)
         }
     }

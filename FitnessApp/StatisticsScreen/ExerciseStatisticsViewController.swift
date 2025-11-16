@@ -8,6 +8,8 @@ class ExerciseStatisticsViewController: UIViewController {
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
         return scrollView
     }()
     
@@ -21,6 +23,7 @@ class ExerciseStatisticsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.numberOfLines = 0
         return label
     }()
     
@@ -28,13 +31,7 @@ class ExerciseStatisticsViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 18, weight: .medium)
-        return label
-    }()
-    
-    private let weeklyAverageLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.numberOfLines = 0
         return label
     }()
     
@@ -114,7 +111,6 @@ class ExerciseStatisticsViewController: UIViewController {
         scrollView.addSubview(contentView)
         contentView.addSubview(totalRepetitionsLabel)
         contentView.addSubview(bestResultLabel)
-        contentView.addSubview(weeklyAverageLabel)
         contentView.addSubview(periodSegmentedControl)
         contentView.addSubview(chartView)
         contentView.addSubview(averageLabel)
@@ -148,11 +144,7 @@ class ExerciseStatisticsViewController: UIViewController {
             bestResultLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             bestResultLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
-            weeklyAverageLabel.topAnchor.constraint(equalTo: bestResultLabel.bottomAnchor, constant: 20),
-            weeklyAverageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            weeklyAverageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            
-            periodSegmentedControl.topAnchor.constraint(equalTo: weeklyAverageLabel.bottomAnchor, constant: 30),
+            periodSegmentedControl.topAnchor.constraint(equalTo: bestResultLabel.bottomAnchor, constant: 30),
             periodSegmentedControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             periodSegmentedControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
@@ -171,7 +163,7 @@ class ExerciseStatisticsViewController: UIViewController {
             addGoalButton.topAnchor.constraint(equalTo: periodLabel.bottomAnchor, constant: 30),
             addGoalButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             addGoalButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            addGoalButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+            addGoalButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -80)
         ])
     }
     
@@ -191,11 +183,6 @@ class ExerciseStatisticsViewController: UIViewController {
         let totalReps = workouts.reduce(0) { $0 + $1.totalRepetitions }
         let bestResult = workouts.map { $0.bestResult }.max() ?? 0
         
-        let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
-        let recentWorkouts = workouts.filter { $0.date >= weekAgo }
-        let weeklyTotal = recentWorkouts.reduce(0) { $0 + $1.totalRepetitions }
-        let weeklyAverage = recentWorkouts.isEmpty ? 0 : weeklyTotal / recentWorkouts.count
-        
         let totalRepsGoal = GoalManager.shared.getGoal(exerciseId: exerciseId, type: .totalRepetitions)
         let bestResultGoal = GoalManager.shared.getGoal(exerciseId: exerciseId, type: .bestResult)
         
@@ -206,20 +193,32 @@ class ExerciseStatisticsViewController: UIViewController {
         }
         
         if let bestGoal = bestResultGoal {
-            bestResultLabel.text = "Лучший результат: \(bestResult)/\(bestGoal.value)"
+            bestResultLabel.text = "Лучший результат за подход: \(bestResult)/\(bestGoal.value)"
         } else {
-            bestResultLabel.text = "Лучший результат: \(bestResult) повторений"
+            bestResultLabel.text = "Лучший результат за подход: \(bestResult) повторений"
         }
-        
-        weeklyAverageLabel.text = "Среднее за неделю: \(weeklyAverage)"
         
         chartView.updateData(workouts: workouts)
         updateChartLabels()
     }
     
     private func updateChartLabels() {
-        let average = chartView.getAverageValue()
-        averageLabel.text = "В среднем: \(average)"
+        let total = chartView.getTotalValue()
+        let period = chartView.getPeriod()
+        
+        switch period {
+        case .day:
+            averageLabel.text = "Всего за день: \(total)"
+        case .week:
+            averageLabel.text = "Всего за неделю: \(total)"
+        case .month:
+            averageLabel.text = "Всего за месяц: \(total)"
+        case .sixMonths:
+            averageLabel.text = "Всего за 6 месяцев: \(total)"
+        case .year:
+            averageLabel.text = "Всего за год: \(total)"
+        }
+        
         periodLabel.text = chartView.getPeriodString()
     }
     

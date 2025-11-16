@@ -157,6 +157,22 @@ class WorkoutManager {
             return []
         }
     }
+    
+    func deleteWorkoutsForExercise(exerciseId: String) {
+        let context = CoreDataManager.shared.context
+        let fetchRequest: NSFetchRequest<WorkoutEntity> = WorkoutEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "exerciseId == %@", exerciseId)
+        
+        do {
+            let entities = try context.fetch(fetchRequest)
+            for entity in entities {
+                context.delete(entity)
+            }
+            CoreDataManager.shared.saveContext()
+        } catch {
+            print("Error deleting workouts for exercise: \(error)")
+        }
+    }
 }
 
 enum GoalType: String, Codable {
@@ -224,6 +240,22 @@ class GoalManager {
         } catch {
             print("Error fetching goals: \(error)")
             return []
+        }
+    }
+    
+    func deleteGoalsForExercise(exerciseId: String) {
+        let context = CoreDataManager.shared.context
+        let fetchRequest: NSFetchRequest<WorkoutGoalEntity> = WorkoutGoalEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "exerciseId == %@", exerciseId)
+        
+        do {
+            let entities = try context.fetch(fetchRequest)
+            for entity in entities {
+                context.delete(entity)
+            }
+            CoreDataManager.shared.saveContext()
+        } catch {
+            print("Error deleting goals for exercise: \(error)")
         }
     }
 }
