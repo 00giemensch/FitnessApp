@@ -1,3 +1,10 @@
+//
+//  LocalExercise.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 13.11.2025.
+//
+
 import Foundation
 
 struct LocalExercise {

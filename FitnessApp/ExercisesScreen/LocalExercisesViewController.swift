@@ -1,3 +1,10 @@
+//
+//  LocalExercisesViewController.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 13.11.2025.
+//
+
 import UIKit
 
 class LocalExercisesViewController: UIViewController {
@@ -28,12 +35,19 @@ class LocalExercisesViewController: UIViewController {
         setupExercises()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        title = "Упражнения"
+//        title = "Упражнения"
+//        navigationController?.setNavigationBarHidden(true, animated: false)
         
-        view.addSubview(titleLabel)
-        view.addSubview(stackView)
+//        view.addSubview(titleLabel)
+//        view.addSubview(stackView)
+        view.addSubviews(titleLabel, stackView)
         
         setupConstraints()
     }
@@ -66,7 +80,7 @@ class LocalExercisesViewController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         if exercise.isAvailable {
-            button.backgroundColor = .systemBlue
+            button.backgroundColor = .appPurple
             button.setTitleColor(.white, for: .normal)
             button.addTarget(self, action: #selector(exerciseTapped(_:)), for: .touchUpInside)
         } else {

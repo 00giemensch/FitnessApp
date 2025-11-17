@@ -1,3 +1,10 @@
+//
+//  WgerExerciseTableViewCell.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 15.11.2025.
+//
+
 import UIKit
 
 class WgerExerciseTableViewCell: UITableViewCell {
@@ -55,9 +62,10 @@ class WgerExerciseTableViewCell: UITableViewCell {
         backgroundColor = .clear
         selectionStyle = .none
         contentView.addSubview(containerView)
-        containerView.addSubview(exerciseImageView)
-        containerView.addSubview(nameLabel)
-        containerView.addSubview(descriptionLabel)
+//        containerView.addSubview(exerciseImageView)
+//        containerView.addSubview(nameLabel)
+//        containerView.addSubview(descriptionLabel)
+        containerView.addSubviews(exerciseImageView, nameLabel, descriptionLabel)
         
         setupConstraints()
     }
@@ -65,8 +73,8 @@ class WgerExerciseTableViewCell: UITableViewCell {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
             
             exerciseImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),

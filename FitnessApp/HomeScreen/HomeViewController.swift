@@ -1,13 +1,29 @@
+//
+//  HomeViewController.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 13.11.2025.
+//
+
 import UIKit
 
 class HomeViewController: UIViewController {
     
-    private let titleLabel: UILabel = {
+    private let logoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "logo")
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    private let welcomeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Выберите упражнение"
-        label.font = .systemFont(ofSize: 28, weight: .bold)
+        label.text = "Добро пожаловать в FitnessApp!"
+        label.font = .systemFont(ofSize: 24, weight: .bold)
         label.textAlignment = .center
+        label.numberOfLines = 0
         return label
     }()
     
@@ -21,36 +37,18 @@ class HomeViewController: UIViewController {
     }()
     
     private let startWorkoutButton: UIButton = {
-        let button = UIButton(type: .system)
+        var config = UIButton.Configuration.plain()
+        config.title = "Начать тренировку"
+        config.baseForegroundColor = .white
+        config.image = UIImage(systemName: "play.fill")
+        config.imagePlacement = .leading
+        config.imagePadding = 12
+        config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
+        
+        let button = UIButton(configuration: config)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("начать тренировку", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .semibold)
-        button.backgroundColor = .systemGreen
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 12
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        return button
-    }()
-    
-    private let statisticsButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Статистика", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .semibold)
-        button.backgroundColor = .systemOrange
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 12
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        return button
-    }()
-    
-    private let exercisesButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("упражнения", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .semibold)
-        button.backgroundColor = .systemBlue
-        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        button.backgroundColor = UIColor(red: 0.66, green: 0.19, blue: 0.77, alpha: 1.0)
         button.layer.cornerRadius = 12
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         return button
@@ -64,26 +62,39 @@ class HomeViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        title = "Главная"
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.setNavigationBarHidden(true, animated: false)
         
-        view.addSubview(titleLabel)
+        view.addSubview(logoImageView)
+        view.addSubview(welcomeLabel)
         view.addSubview(stackView)
         
         stackView.addArrangedSubview(startWorkoutButton)
-        stackView.addArrangedSubview(statisticsButton)
-        stackView.addArrangedSubview(exercisesButton)
         
         setupConstraints()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.widthAnchor.constraint(equalToConstant: 180),
+            logoImageView.heightAnchor.constraint(equalToConstant: 180),
             
-            stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 60),
+            welcomeLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 30),
+            welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            stackView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 60),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
@@ -91,22 +102,10 @@ class HomeViewController: UIViewController {
     
     private func setupActions() {
         startWorkoutButton.addTarget(self, action: #selector(startWorkoutTapped), for: .touchUpInside)
-        statisticsButton.addTarget(self, action: #selector(statisticsTapped), for: .touchUpInside)
-        exercisesButton.addTarget(self, action: #selector(exercisesTapped), for: .touchUpInside)
-    }
-    
-    @objc private func exercisesTapped() {
-        let exercisesVC = WgerExercisesViewController()
-        navigationController?.pushViewController(exercisesVC, animated: true)
     }
     
     @objc private func startWorkoutTapped() {
         let localExercisesVC = LocalExercisesViewController()
         navigationController?.pushViewController(localExercisesVC, animated: true)
-    }
-    
-    @objc private func statisticsTapped() {
-        let statisticsVC = StatisticsViewController()
-        navigationController?.pushViewController(statisticsVC, animated: true)
     }
 }

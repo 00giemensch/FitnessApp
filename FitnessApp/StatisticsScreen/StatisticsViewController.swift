@@ -1,3 +1,10 @@
+//
+//  StatisticsViewController.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 13.11.2025.
+//
+
 import UIKit
 
 struct ExerciseStatsItem {
@@ -48,12 +55,13 @@ class StatisticsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         loadWorkouts()
     }
     
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        title = "Статистика"
+        navigationController?.setNavigationBarHidden(true, animated: false)
         
         view.addSubview(titleLabel)
         view.addSubview(tableView)
@@ -70,14 +78,14 @@ class StatisticsViewController: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
+            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             emptyStateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emptyStateLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
@@ -114,6 +122,8 @@ extension StatisticsViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ExerciseCell", for: indexPath) as! StatisticsExerciseCell
         let exercise = exercises[indexPath.row]
         cell.configure(with: exercise.exerciseName)
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
         return cell
     }
     
@@ -168,7 +178,7 @@ class StatisticsExerciseCell: UITableViewCell {
     private let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemBlue
+        view.backgroundColor = UIColor(red: 0.66, green: 0.19, blue: 0.77, alpha: 1.0)
         view.layer.cornerRadius = 12
         return view
     }()

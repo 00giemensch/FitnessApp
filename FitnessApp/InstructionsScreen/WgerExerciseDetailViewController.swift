@@ -1,3 +1,10 @@
+//
+//  WgerExerciseDetailViewController.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 16.11.2025.
+//
+
 import UIKit
 
 class WgerExerciseDetailViewController: UIViewController {
@@ -19,11 +26,20 @@ class WgerExerciseDetailViewController: UIViewController {
         return view
     }()
     
+    private let backButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        button.tintColor = .label
+        return button
+    }()
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 24, weight: .bold)
-        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.numberOfLines = 2
         return label
     }()
     
@@ -69,18 +85,30 @@ class WgerExerciseDetailViewController: UIViewController {
         loadExerciseDetails()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        title = "Инструкция"
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
+        contentView.addSubview(backButton)
         contentView.addSubview(nameLabel)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(imageView)
         view.addSubview(activityIndicator)
         
         setupConstraints()
+    }
+    
+    @objc private func backTapped() {
+        navigationController?.popViewController(animated: true)
     }
     
     private func setupConstraints() {
@@ -98,9 +126,15 @@ class WgerExerciseDetailViewController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            backButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            backButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            backButton.widthAnchor.constraint(equalToConstant: 44),
+            backButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            nameLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
+            nameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            nameLabel.leadingAnchor.constraint(greaterThanOrEqualTo: backButton.trailingAnchor, constant: 8),
+            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -20),
             
             imageView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 20),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),

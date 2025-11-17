@@ -1,3 +1,10 @@
+//
+//  WgerCategoryCollectionViewCell.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 15.11.2025.
+//
+
 import UIKit
 
 class WgerCategoryCollectionViewCell: UICollectionViewCell {
@@ -5,7 +12,7 @@ class WgerCategoryCollectionViewCell: UICollectionViewCell {
     private let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemBlue
+        view.backgroundColor = .appPurple
         view.layer.cornerRadius = 12
         return view
     }()

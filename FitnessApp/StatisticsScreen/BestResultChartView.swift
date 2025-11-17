@@ -1,3 +1,10 @@
+//
+//  BestResultChartView.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 16.11.2025.
+//
+
 import UIKit
 
 enum ChartPeriod: Int, CaseIterable {

@@ -1,3 +1,10 @@
+//
+//  WorkoutViewController.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 13.11.2025.
+//
+
 import UIKit
 
 struct WorkoutSetData {
@@ -23,12 +30,20 @@ class WorkoutViewController: UIViewController {
         return view
     }()
     
+    private let backButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        button.tintColor = .label
+        return button
+    }()
+    
     private let exerciseNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 24, weight: .bold)
         label.textAlignment = .center
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         return label
     }()
     
@@ -37,7 +52,7 @@ class WorkoutViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("добавить подход", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
-        button.backgroundColor = .systemGreen
+        button.backgroundColor = UIColor(red: 0.66, green: 0.19, blue: 0.77, alpha: 1.0)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 12
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -49,7 +64,7 @@ class WorkoutViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Завершить тренировку", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = UIColor(red: 0.66, green: 0.19, blue: 0.77, alpha: 1.0)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 12
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -72,9 +87,14 @@ class WorkoutViewController: UIViewController {
         setupActions()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        title = exerciseName
+        navigationController?.setNavigationBarHidden(true, animated: false)
         
         exerciseNameLabel.text = exerciseName
         
@@ -84,14 +104,21 @@ class WorkoutViewController: UIViewController {
         setsStackView.spacing = 16
         setsStackView.distribution = .fill
         
+        backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
+        contentView.addSubview(backButton)
         contentView.addSubview(exerciseNameLabel)
         contentView.addSubview(setsStackView)
         contentView.addSubview(addSetButton)
         contentView.addSubview(completeWorkoutButton)
         
         setupConstraints()
+    }
+    
+    @objc private func backTapped() {
+        navigationController?.popViewController(animated: true)
     }
     
     private func setupConstraints() {
@@ -107,9 +134,15 @@ class WorkoutViewController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            exerciseNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            exerciseNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            exerciseNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            backButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            backButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            backButton.widthAnchor.constraint(equalToConstant: 44),
+            backButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            exerciseNameLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
+            exerciseNameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            exerciseNameLabel.leadingAnchor.constraint(greaterThanOrEqualTo: backButton.trailingAnchor, constant: 8),
+            exerciseNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -20),
             
             setsStackView.topAnchor.constraint(equalTo: exerciseNameLabel.bottomAnchor, constant: 30),
             setsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
@@ -245,7 +278,7 @@ class WorkoutViewController: UIViewController {
             let changeButton = UIButton(type: .system)
             changeButton.setTitle("Изменить значение", for: .normal)
             changeButton.titleLabel?.font = .systemFont(ofSize: 14)
-            changeButton.setTitleColor(.systemBlue, for: .normal)
+            changeButton.setTitleColor(UIColor(red: 0.66, green: 0.19, blue: 0.77, alpha: 1.0), for: .normal)
             changeButton.addTarget(self, action: #selector(changeRepetitionsTapped(_:)), for: .touchUpInside)
             changeButton.tag = setNumber - 1
             
@@ -255,7 +288,7 @@ class WorkoutViewController: UIViewController {
             let addButton = UIButton(type: .system)
             addButton.setTitle("Добавить повторения", for: .normal)
             addButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-            addButton.setTitleColor(.systemBlue, for: .normal)
+            addButton.setTitleColor(UIColor(red: 0.66, green: 0.19, blue: 0.77, alpha: 1.0), for: .normal)
             addButton.addTarget(self, action: #selector(addRepetitionsTapped(_:)), for: .touchUpInside)
             addButton.tag = setNumber - 1
             

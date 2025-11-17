@@ -1,3 +1,10 @@
+//
+//  WgerExercisesViewController.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 15.11.2025.
+//
+
 import UIKit
 
 class WgerExercisesViewController: UIViewController {
@@ -13,7 +20,17 @@ class WgerExercisesViewController: UIViewController {
         label.text = "Выберите категорию"
         label.font = .systemFont(ofSize: 24, weight: .bold)
         label.textAlignment = .center
+        label.numberOfLines = 1
         return label
+    }()
+    
+    private let backButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        button.tintColor = .label
+        button.isHidden = true
+        return button
     }()
     
     private let collectionView: UICollectionView = {
@@ -50,22 +67,32 @@ class WgerExercisesViewController: UIViewController {
         loadCategories()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        updateNavigationBar()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        if selectedCategoryId == nil {
+//            navigationController?.setNavigationBarHidden(true, animated: animated)
+//        } else {
+//            navigationController?.setNavigationBarHidden(false, animated: animated)
+//        }
+//        updateNavigationBar()
+//    }
     
     private func setupUI() {
         view.backgroundColor = .systemBackground
         title = "Инструкции"
         navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.setNavigationBarHidden(true, animated: false)
         
         tableView.isHidden = true
         
-        view.addSubview(titleLabel)
-        view.addSubview(collectionView)
-        view.addSubview(tableView)
-        view.addSubview(activityIndicator)
+        view.addSubviews(titleLabel, backButton, collectionView, tableView, activityIndicator)
+//        view.addSubview(titleLabel)
+//        view.addSubview(backButton)
+//        view.addSubview(collectionView)
+//        view.addSubview(tableView)
+//        view.addSubview(activityIndicator)
+        
+        backButton.addTarget(self, action: #selector(backToCategories), for: .touchUpInside)
         
         setupConstraints()
         setupCollectionView()
@@ -84,17 +111,15 @@ class WgerExercisesViewController: UIViewController {
     }
     
     private func updateNavigationBar() {
+        navigationController?.setNavigationBarHidden(true, animated: true)
         if selectedCategoryId != nil {
-            title = "Упражнения"
-            navigationItem.leftBarButtonItem = UIBarButtonItem(
-                title: "Назад",
-                style: .plain,
-                target: self,
-                action: #selector(backToCategories)
-            )
+            titleLabel.text = "Упражнения"
+            titleLabel.isHidden = false
+            backButton.isHidden = false
         } else {
-            title = "Инструкции"
-            navigationItem.leftBarButtonItem = nil
+            titleLabel.text = "Выберите категорию"
+            titleLabel.isHidden = false
+            backButton.isHidden = true
         }
     }
     
@@ -109,18 +134,23 @@ class WgerExercisesViewController: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            backButton.widthAnchor.constraint(equalToConstant: 44),
+            backButton.heightAnchor.constraint(equalToConstant: 44),
+            
+//            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            titleLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),

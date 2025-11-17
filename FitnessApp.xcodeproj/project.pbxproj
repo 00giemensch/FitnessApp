@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5EEE432D7C964AD0B25BBF8764DBCC73 /* BestResultChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */; };
+		675807452ECA74F900BBC172 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675807442ECA74F900BBC172 /* UIView+.swift */; };
 		6782965C2EC8E2680056D7AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 678296432EC8E2680056D7AA /* LaunchScreen.storyboard */; };
 		6782965D2EC8E2680056D7AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 678296462EC8E2680056D7AA /* Assets.xcassets */; };
 		6782965F2EC8E2680056D7AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296412EC8E2680056D7AA /* AppDelegate.swift */; };
@@ -28,12 +30,15 @@
 		678296842EC902360056D7AA /* WgerExerciseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296812EC902360056D7AA /* WgerExerciseDetailViewController.swift */; };
 		678296852EC902360056D7AA /* WgerExercisesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296822EC902360056D7AA /* WgerExercisesViewController.swift */; };
 		678296862EC902360056D7AA /* WgerExerciseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296832EC902360056D7AA /* WgerExerciseTableViewCell.swift */; };
-		678296892EC9040B0056D7AA /* WgerCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782968A2EC9040C0056D7AA /* WgerCategoryCollectionViewCell.swift */; };
 		678296882EC9040A0056D7AA /* WgerCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296872EC9040A0056D7AA /* WgerCache.swift */; };
-		5EEE432D7C964AD0B25BBF8764DBCC73 /* BestResultChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */; };
+		678296892EC9040B0056D7AA /* WgerCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782968A2EC9040C0056D7AA /* WgerCategoryCollectionViewCell.swift */; };
+		6782968B2EC9040D0056D7AA /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782968C2EC9040E0056D7AA /* MainTabBarController.swift */; };
+		678296902EC904120056D7AA /* CustomBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296912EC904130056D7AA /* CustomBackButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestResultChartView.swift; sourceTree = "<group>"; };
+		675807442ECA74F900BBC172 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		6778BA272EC6514B009C02EF /* FitnessApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitnessApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		678296412EC8E2680056D7AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		678296422EC8E2680056D7AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -57,9 +62,10 @@
 		678296812EC902360056D7AA /* WgerExerciseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerExerciseDetailViewController.swift; sourceTree = "<group>"; };
 		678296822EC902360056D7AA /* WgerExercisesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerExercisesViewController.swift; sourceTree = "<group>"; };
 		678296832EC902360056D7AA /* WgerExerciseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerExerciseTableViewCell.swift; sourceTree = "<group>"; };
-		6782968A2EC9040C0056D7AA /* WgerCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		678296872EC9040A0056D7AA /* WgerCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerCache.swift; sourceTree = "<group>"; };
-		5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestResultChartView.swift; sourceTree = "<group>"; };
+		6782968A2EC9040C0056D7AA /* WgerCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		6782968C2EC9040E0056D7AA /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		678296912EC904130056D7AA /* CustomBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		675807432ECA72D900BBC172 /* InstructionsScreen */ = {
+			isa = PBXGroup;
+			children = (
+				678296812EC902360056D7AA /* WgerExerciseDetailViewController.swift */,
+				678296822EC902360056D7AA /* WgerExercisesViewController.swift */,
+				678296832EC902360056D7AA /* WgerExerciseTableViewCell.swift */,
+				6782968A2EC9040C0056D7AA /* WgerCategoryCollectionViewCell.swift */,
+			);
+			path = InstructionsScreen;
+			sourceTree = "<group>";
+		};
 		6778BA1E2EC6514B009C02EF = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +112,7 @@
 				678296432EC8E2680056D7AA /* LaunchScreen.storyboard */,
 				678296412EC8E2680056D7AA /* AppDelegate.swift */,
 				678296442EC8E2680056D7AA /* SceneDelegate.swift */,
+				6782968C2EC9040E0056D7AA /* MainTabBarController.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -107,6 +125,7 @@
 				678296742EC8E2CA0056D7AA /* Model */,
 				678296782EC8EA550056D7AA /* StatisticsScreen */,
 				678296752EC8E30F0056D7AA /* HomeScreen */,
+				675807432ECA72D900BBC172 /* InstructionsScreen */,
 				678296762EC8E8FE0056D7AA /* ExercisesScreen */,
 				678296772EC8E95D0056D7AA /* TrainScreen */,
 			);
@@ -116,8 +135,10 @@
 		678296732EC8E2740056D7AA /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				6782968F2EC904110056D7AA /* Utils */,
 				678296512EC8E2680056D7AA /* Info.plist */,
 				678296462EC8E2680056D7AA /* Assets.xcassets */,
+				675807442ECA74F900BBC172 /* UIView+.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -147,10 +168,6 @@
 		678296762EC8E8FE0056D7AA /* ExercisesScreen */ = {
 			isa = PBXGroup;
 			children = (
-				678296812EC902360056D7AA /* WgerExerciseDetailViewController.swift */,
-				678296822EC902360056D7AA /* WgerExercisesViewController.swift */,
-				678296832EC902360056D7AA /* WgerExerciseTableViewCell.swift */,
-				6782968A2EC9040C0056D7AA /* WgerCategoryCollectionViewCell.swift */,
 				678296532EC8E2680056D7AA /* LocalExercisesViewController.swift */,
 				678296522EC8E2680056D7AA /* LocalExercise.swift */,
 			);
@@ -175,6 +192,14 @@
 				678296552EC8E2680056D7AA /* StatisticsViewController.swift */,
 			);
 			path = StatisticsScreen;
+			sourceTree = "<group>";
+		};
+		6782968F2EC904110056D7AA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				678296912EC904130056D7AA /* CustomBackButton.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +282,8 @@
 				678296882EC9040A0056D7AA /* WgerCache.swift in Sources */,
 				6782965F2EC8E2680056D7AA /* AppDelegate.swift in Sources */,
 				678296602EC8E2680056D7AA /* SceneDelegate.swift in Sources */,
+				6782968B2EC9040D0056D7AA /* MainTabBarController.swift in Sources */,
+				678296902EC904120056D7AA /* CustomBackButton.swift in Sources */,
 				678296612EC8E2680056D7AA /* CoreDataEntities.swift in Sources */,
 				6782967F2EC901FC0056D7AA /* WgerExercise.swift in Sources */,
 				678296802EC901FC0056D7AA /* WgerService.swift in Sources */,
@@ -272,6 +299,7 @@
 				678296702EC8E2680056D7AA /* Workout.swift in Sources */,
 				678296712EC8E2680056D7AA /* WorkoutSetTableViewCell.swift in Sources */,
 				678296722EC8E2680056D7AA /* WorkoutViewController.swift in Sources */,
+				675807452ECA74F900BBC172 /* UIView+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

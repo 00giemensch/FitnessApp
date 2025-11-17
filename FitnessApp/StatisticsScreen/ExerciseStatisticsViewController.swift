@@ -1,3 +1,10 @@
+//
+//  ExerciseStatisticsViewController.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 13.11.2025.
+//
+
 import UIKit
 
 class ExerciseStatisticsViewController: UIViewController {
@@ -71,7 +78,7 @@ class ExerciseStatisticsViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Добавить цель", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = UIColor(red: 0.66, green: 0.19, blue: 0.77, alpha: 1.0)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
         button.heightAnchor.constraint(equalToConstant: 44).isActive = true
@@ -95,6 +102,7 @@ class ExerciseStatisticsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         loadData()
     }
     
@@ -105,7 +113,7 @@ class ExerciseStatisticsViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        title = "Статистика"
+        navigationController?.setNavigationBarHidden(true, animated: false)
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)

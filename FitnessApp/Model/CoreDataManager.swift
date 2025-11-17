@@ -1,3 +1,10 @@
+//
+//  CoreDataManager.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 13.11.2025.
+//
+
 import Foundation
 import CoreData
 import UIKit

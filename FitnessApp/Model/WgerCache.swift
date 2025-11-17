@@ -1,3 +1,10 @@
+//
+//  WgerCache.swift
+//  FitnessApp
+//
+//  Created by Ilnur on 15.11.2025.
+//
+
 import Foundation
 
 class WgerCache {
