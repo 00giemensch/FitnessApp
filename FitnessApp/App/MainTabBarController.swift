@@ -28,12 +28,10 @@ class MainTabBarController: UITabBarController {
         
         viewControllers = [homeVC, statisticsVC, exercisesVC]
         
-        tabBar.tintColor = .appPurple
         tabBar.unselectedItemTintColor = .gray
     }
     
     private func setupCustomTabBar() {
-        tabBar.layer.cornerRadius = 20
         tabBar.clipsToBounds = true
         
         let appearance = UITabBarAppearance()

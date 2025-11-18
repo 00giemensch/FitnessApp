@@ -48,7 +48,7 @@ class HomeViewController: UIViewController {
         let button = UIButton(configuration: config)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
-        button.backgroundColor = UIColor(red: 0.66, green: 0.19, blue: 0.77, alpha: 1.0)
+        button.backgroundColor = .appPurple
         button.layer.cornerRadius = 12
         button.heightAnchor.constraint(equalToConstant: 60).isActive = true
         return button
@@ -64,23 +64,10 @@ class HomeViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationController?.setNavigationBarHidden(true, animated: false)
         
-        view.addSubview(logoImageView)
-        view.addSubview(welcomeLabel)
-        view.addSubview(stackView)
-        
+        view.addSubviews(logoImageView, welcomeLabel, stackView)
         stackView.addArrangedSubview(startWorkoutButton)
         
         setupConstraints()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     private func setupConstraints() {

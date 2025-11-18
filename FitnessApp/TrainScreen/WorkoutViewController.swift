@@ -108,12 +108,13 @@ class WorkoutViewController: UIViewController {
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubview(backButton)
-        contentView.addSubview(exerciseNameLabel)
-        contentView.addSubview(setsStackView)
-        contentView.addSubview(addSetButton)
-        contentView.addSubview(completeWorkoutButton)
-        
+        contentView.addSubviews(backButton, exerciseNameLabel, setsStackView, addSetButton, completeWorkoutButton)
+//        contentView.addSubview(backButton)
+//        contentView.addSubview(exerciseNameLabel)
+//        contentView.addSubview(setsStackView)
+//        contentView.addSubview(addSetButton)
+//        contentView.addSubview(completeWorkoutButton)
+//        
         setupConstraints()
     }
     

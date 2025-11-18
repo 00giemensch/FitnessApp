@@ -42,11 +42,6 @@ class LocalExercisesViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .systemBackground
-//        title = "Упражнения"
-//        navigationController?.setNavigationBarHidden(true, animated: false)
-        
-//        view.addSubview(titleLabel)
-//        view.addSubview(stackView)
         view.addSubviews(titleLabel, stackView)
         
         setupConstraints()
