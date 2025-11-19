@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5EEE432D7C964AD0B25BBF8764DBCC73 /* BestResultChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */; };
 		675807452ECA74F900BBC172 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675807442ECA74F900BBC172 /* UIView+.swift */; };
+		675807482ECE5A2C00BBC172 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675807472ECE5A2C00BBC172 /* AppCoordinator.swift */; };
 		6782965C2EC8E2680056D7AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 678296432EC8E2680056D7AA /* LaunchScreen.storyboard */; };
 		6782965D2EC8E2680056D7AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 678296462EC8E2680056D7AA /* Assets.xcassets */; };
 		6782965F2EC8E2680056D7AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296412EC8E2680056D7AA /* AppDelegate.swift */; };
@@ -39,6 +40,7 @@
 /* Begin PBXFileReference section */
 		5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestResultChartView.swift; sourceTree = "<group>"; };
 		675807442ECA74F900BBC172 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		675807472ECE5A2C00BBC172 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		6778BA272EC6514B009C02EF /* FitnessApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitnessApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		678296412EC8E2680056D7AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		678296422EC8E2680056D7AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -98,6 +100,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		675807492ECE5AE100BBC172 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				675807472ECE5A2C00BBC172 /* AppCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		6778BA1E2EC6514B009C02EF = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +146,7 @@
 				675807432ECA72D900BBC172 /* InstructionsScreen */,
 				678296762EC8E8FE0056D7AA /* ExercisesScreen */,
 				678296772EC8E95D0056D7AA /* TrainScreen */,
+				675807492ECE5AE100BBC172 /* Coordinator */,
 			);
 			path = FitnessApp;
 			sourceTree = "<group>";
@@ -285,6 +296,7 @@
 			files = (
 				678296842EC902360056D7AA /* WgerExerciseDetailViewController.swift in Sources */,
 				678296852EC902360056D7AA /* WgerExercisesViewController.swift in Sources */,
+				675807482ECE5A2C00BBC172 /* AppCoordinator.swift in Sources */,
 				678296862EC902360056D7AA /* WgerExerciseTableViewCell.swift in Sources */,
 				678296892EC9040B0056D7AA /* WgerCategoryCollectionViewCell.swift in Sources */,
 				678296882EC9040A0056D7AA /* WgerCache.swift in Sources */,
