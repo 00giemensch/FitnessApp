@@ -11,6 +11,7 @@
 		675807452ECA74F900BBC172 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675807442ECA74F900BBC172 /* UIView+.swift */; };
 		675807482ECE5A2C00BBC172 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675807472ECE5A2C00BBC172 /* AppCoordinator.swift */; };
 		6758074B2ECE64CB00BBC172 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6758074A2ECE64CB00BBC172 /* HomeViewModel.swift */; };
+		6758074D2ECE747200BBC172 /* StatisticsExerciseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6758074C2ECE747200BBC172 /* StatisticsExerciseCell.swift */; };
 		6782965C2EC8E2680056D7AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 678296432EC8E2680056D7AA /* LaunchScreen.storyboard */; };
 		6782965D2EC8E2680056D7AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 678296462EC8E2680056D7AA /* Assets.xcassets */; };
 		6782965F2EC8E2680056D7AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296412EC8E2680056D7AA /* AppDelegate.swift */; };
@@ -43,6 +44,7 @@
 		675807442ECA74F900BBC172 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		675807472ECE5A2C00BBC172 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		6758074A2ECE64CB00BBC172 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		6758074C2ECE747200BBC172 /* StatisticsExerciseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsExerciseCell.swift; sourceTree = "<group>"; };
 		6778BA272EC6514B009C02EF /* FitnessApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitnessApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		678296412EC8E2680056D7AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		678296422EC8E2680056D7AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 				5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */,
 				678296542EC8E2680056D7AA /* StatisticsTableViewCell.swift */,
 				678296552EC8E2680056D7AA /* StatisticsViewController.swift */,
+				6758074C2ECE747200BBC172 /* StatisticsExerciseCell.swift */,
 			);
 			path = StatisticsScreen;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				6782966B2EC8E2680056D7AA /* LocalExercise.swift in Sources */,
 				6782966C2EC8E2680056D7AA /* LocalExercisesViewController.swift in Sources */,
 				6782966D2EC8E2680056D7AA /* StatisticsTableViewCell.swift in Sources */,
+				6758074D2ECE747200BBC172 /* StatisticsExerciseCell.swift in Sources */,
 				6782966E2EC8E2680056D7AA /* StatisticsViewController.swift in Sources */,
 				678296702EC8E2680056D7AA /* Workout.swift in Sources */,
 				678296712EC8E2680056D7AA /* WorkoutSetTableViewCell.swift in Sources */,

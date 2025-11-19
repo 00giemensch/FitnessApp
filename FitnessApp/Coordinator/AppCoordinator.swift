@@ -8,17 +8,16 @@
 import UIKit
 import Foundation
 
-final class AppCoordinator {
+protocol IAppCoordinator {
+    
+}
+
+final class AppCoordinator: IAppCoordinator {
     
     let tabBarController: MainTabBarController = {
         let controller = MainTabBarController()
         return controller
     }()
-    
-//    private let rootNavigationController: UINavigationController = {
-//        let controller = UINavigationController()
-//        return controller
-//    }()
     
     let homeNavigationController = UINavigationController()
     let statiscticsNavigationController = UINavigationController()

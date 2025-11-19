@@ -42,9 +42,7 @@ class StatisticsTableViewCell: UITableViewCell {
     }
     
     private func setupUI() {
-        contentView.addSubview(exerciseNameLabel)
-        contentView.addSubview(dateLabel)
-        contentView.addSubview(statsLabel)
+        contentView.addSubviews(exerciseNameLabel, dateLabel, statsLabel)
         
         NSLayoutConstraint.activate([
             exerciseNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
