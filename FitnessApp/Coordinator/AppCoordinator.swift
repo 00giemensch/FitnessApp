@@ -15,10 +15,10 @@ final class AppCoordinator {
         return controller
     }()
     
-    private let rootNavigationController: UINavigationController = {
-        let controller = UINavigationController()
-        return controller
-    }()
+//    private let rootNavigationController: UINavigationController = {
+//        let controller = UINavigationController()
+//        return controller
+//    }()
     
     let homeNavigationController = UINavigationController()
     let statiscticsNavigationController = UINavigationController()
@@ -47,10 +47,10 @@ final class AppCoordinator {
         
         let statisticsVC = StatisticsViewController()
         statiscticsNavigationController.setViewControllers([statisticsVC], animated: false)
-        statisticsVC.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(systemName: "chart.bar"), selectedImage: UIImage(systemName: "chart.bar.fill"))
+        statiscticsNavigationController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(systemName: "chart.bar"), selectedImage: UIImage(systemName: "chart.bar.fill"))
         
         let exercisesVC = WgerExercisesViewController()
         exercisesNavigationController.setViewControllers([exercisesVC], animated: false)
-        exercisesVC.tabBarItem = UITabBarItem(title: "Инструкции", image: UIImage(systemName: "dumbbell"), selectedImage: UIImage(systemName: "dumbbell.fill"))
+        exercisesNavigationController.tabBarItem = UITabBarItem(title: "Инструкции", image: UIImage(systemName: "dumbbell"), selectedImage: UIImage(systemName: "dumbbell.fill"))
     }
 }
