@@ -121,6 +121,7 @@
 			children = (
 				6758074E2ECF6A3D00BBC172 /* StatisticsViewModel.swift */,
 				675807512ECF6DB300BBC172 /* StatiscticsModel.swift */,
+				678296552EC8E2680056D7AA /* StatisticsViewController.swift */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
@@ -227,7 +228,6 @@
 				6782964C2EC8E2680056D7AA /* ExerciseStatisticsViewController.swift */,
 				5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */,
 				678296542EC8E2680056D7AA /* StatisticsTableViewCell.swift */,
-				678296552EC8E2680056D7AA /* StatisticsViewController.swift */,
 				6758074C2ECE747200BBC172 /* StatisticsExerciseCell.swift */,
 			);
 			path = StatisticsScreen;

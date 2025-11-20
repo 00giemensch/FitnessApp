@@ -9,8 +9,10 @@ import Foundation
 
 class StatisticsViewModel {
     
+    weak var coordinator: IAppCoordinator?
+    
     var onEmpty: ((Bool) -> Void)?
-    var onReloadData: (() -> ())?
+    var onReloadData: (() -> Void)?
     
     private var exercises: [ExerciseStatsItem] = []
     
@@ -27,6 +29,10 @@ class StatisticsViewModel {
         if exercises.isEmpty {
             onEmpty?(true)
         }
+    }
+    
+    func exerciseSelected(exerciseId: String) {
+        coordinator?.showExerciseStatistics(exerciseId: exerciseId)
     }
     
     func loadWorkouts() {

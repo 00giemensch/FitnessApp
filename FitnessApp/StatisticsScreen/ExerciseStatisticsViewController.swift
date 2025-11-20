@@ -9,6 +9,8 @@ import UIKit
 
 class ExerciseStatisticsViewController: UIViewController {
     
+    weak var coordinator: IAppCoordinator?
+    
     private let exerciseId: String
     private var workouts: [Workout] = []
     

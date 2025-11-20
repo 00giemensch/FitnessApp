@@ -9,6 +9,8 @@ import UIKit
 
 class StatisticsViewController: UIViewController {
     
+    weak var coordinator: IAppCoordinator?
+    
     private let viewModel = StatisticsViewModel()
     
     private let titleLabel: UILabel = {
@@ -47,6 +49,8 @@ class StatisticsViewController: UIViewController {
         setupTableView()
         viewModel.loadWorkouts()
         subscribeViewModel()
+        
+        viewModel.coordinator = coordinator
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,8 +132,9 @@ extension StatisticsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let exercise = viewModel.getModel()[indexPath.row]
-        let detailVC = ExerciseStatisticsViewController(exerciseId: exercise.exerciseId)
-        navigationController?.pushViewController(detailVC, animated: true)
+        //let detailVC = ExerciseStatisticsViewController(exerciseId: exercise.exerciseId)
+        //navigationController?.pushViewController(detailVC, animated: true)
+        viewModel.exerciseSelected(exerciseId: exercise.exerciseId)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
