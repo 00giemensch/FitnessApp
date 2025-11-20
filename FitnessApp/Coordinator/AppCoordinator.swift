@@ -8,7 +8,7 @@
 import UIKit
 import Foundation
 
-protocol IAppCoordinator {
+protocol IAppCoordinator: AnyObject {
     
 }
 

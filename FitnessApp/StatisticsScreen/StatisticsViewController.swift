@@ -7,14 +7,9 @@
 
 import UIKit
 
-struct ExerciseStatsItem {
-    let exerciseId: String
-    let exerciseName: String
-}
-
 class StatisticsViewController: UIViewController {
     
-    private var exercises: [ExerciseStatsItem] = []
+    private let viewModel = StatisticsViewModel()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -50,13 +45,14 @@ class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupTableView()
-        loadWorkouts()
+        viewModel.loadWorkouts()
+        subscribeViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        loadWorkouts()
+        viewModel.loadWorkouts()
     }
     
     private func setupUI() {
@@ -66,6 +62,16 @@ class StatisticsViewController: UIViewController {
         view.addSubviews(titleLabel, tableView, emptyStateLabel)
         
         setupConstraints()
+    }
+    
+    private func subscribeViewModel() {
+        viewModel.onEmpty = { [weak self] isEmpty in
+            self?.toogleEmptyState(isEmpty: isEmpty)
+        }
+        viewModel.onReloadData = { [weak self] in
+            self?.reloadData()
+        }
+        
     }
     
     private func setupTableView() {
@@ -90,35 +96,25 @@ class StatisticsViewController: UIViewController {
         ])
     }
     
-    private func loadWorkouts() {
-        let allWorkouts = WorkoutManager.shared.getAllWorkouts()
-        let exerciseIds = Set(allWorkouts.map { $0.exerciseId })
-        
-        exercises = exerciseIds.compactMap { exerciseId in
-            guard let workout = allWorkouts.first(where: { $0.exerciseId == exerciseId }) else { return nil }
-            return ExerciseStatsItem(exerciseId: exerciseId, exerciseName: workout.exerciseName)
-        }.sorted { $0.exerciseName < $1.exerciseName }
-        
-        if exercises.isEmpty {
-            emptyStateLabel.isHidden = false
-            tableView.isHidden = true
-        } else {
-            emptyStateLabel.isHidden = true
-            tableView.isHidden = false
-        }
-        
+    private func toogleEmptyState(isEmpty: Bool) {
+        emptyStateLabel.isHidden = isEmpty
+        tableView.isHidden = !isEmpty
+    }
+    
+    private func reloadData() {
         tableView.reloadData()
     }
+    
 }
 
 extension StatisticsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return exercises.count
+        return viewModel.countOfExercises()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ExerciseCell", for: indexPath) as! StatisticsExerciseCell
-        let exercise = exercises[indexPath.row]
+        let exercise = viewModel.getModel()[indexPath.row]
         cell.configure(with: exercise.exerciseName)
         cell.setNeedsLayout()
         cell.layoutIfNeeded()
@@ -131,7 +127,7 @@ extension StatisticsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let exercise = exercises[indexPath.row]
+        let exercise = viewModel.getModel()[indexPath.row]
         let detailVC = ExerciseStatisticsViewController(exerciseId: exercise.exerciseId)
         navigationController?.pushViewController(detailVC, animated: true)
     }
@@ -142,7 +138,7 @@ extension StatisticsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let exercise = exercises[indexPath.row]
+            let exercise = viewModel.getModel()[indexPath.row]
             
             let alert = UIAlertController(
                 title: "Удалить статистику",
@@ -155,15 +151,16 @@ extension StatisticsViewController: UITableViewDataSource, UITableViewDelegate {
             })
             alert.addAction(UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
                 guard let self = self else { return }
-                WorkoutManager.shared.deleteWorkoutsForExercise(exerciseId: exercise.exerciseId)
-                GoalManager.shared.deleteGoalsForExercise(exerciseId: exercise.exerciseId)
-                self.exercises.remove(at: indexPath.row)
+                viewModel.deleteWorkoutsForExercise(exerciseId: exercise.exerciseId)
+                viewModel.deleteGoals(exerciseId: exercise.exerciseId)
                 self.tableView.deleteRows(at: [indexPath], with: .fade)
+                viewModel.removeItem(index: indexPath.row)
+
                 
-                if self.exercises.isEmpty {
-                    self.tableView.isHidden = true
-                    self.emptyStateLabel.isHidden = false
-                }
+//                if self.exercises.isEmpty {
+//                    self.tableView.isHidden = true
+//                    self.emptyStateLabel.isHidden = false
+//                }
             })
             
             present(alert, animated: true)

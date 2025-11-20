@@ -12,6 +12,8 @@
 		675807482ECE5A2C00BBC172 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675807472ECE5A2C00BBC172 /* AppCoordinator.swift */; };
 		6758074B2ECE64CB00BBC172 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6758074A2ECE64CB00BBC172 /* HomeViewModel.swift */; };
 		6758074D2ECE747200BBC172 /* StatisticsExerciseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6758074C2ECE747200BBC172 /* StatisticsExerciseCell.swift */; };
+		6758074F2ECF6A3D00BBC172 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6758074E2ECF6A3D00BBC172 /* StatisticsViewModel.swift */; };
+		675807522ECF6DB300BBC172 /* StatiscticsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675807512ECF6DB300BBC172 /* StatiscticsModel.swift */; };
 		6782965C2EC8E2680056D7AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 678296432EC8E2680056D7AA /* LaunchScreen.storyboard */; };
 		6782965D2EC8E2680056D7AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 678296462EC8E2680056D7AA /* Assets.xcassets */; };
 		6782965F2EC8E2680056D7AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296412EC8E2680056D7AA /* AppDelegate.swift */; };
@@ -45,6 +47,8 @@
 		675807472ECE5A2C00BBC172 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		6758074A2ECE64CB00BBC172 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		6758074C2ECE747200BBC172 /* StatisticsExerciseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsExerciseCell.swift; sourceTree = "<group>"; };
+		6758074E2ECF6A3D00BBC172 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
+		675807512ECF6DB300BBC172 /* StatiscticsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatiscticsModel.swift; sourceTree = "<group>"; };
 		6778BA272EC6514B009C02EF /* FitnessApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitnessApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		678296412EC8E2680056D7AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		678296422EC8E2680056D7AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -110,6 +114,15 @@
 				675807472ECE5A2C00BBC172 /* AppCoordinator.swift */,
 			);
 			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		675807502ECF6A4400BBC172 /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				6758074E2ECF6A3D00BBC172 /* StatisticsViewModel.swift */,
+				675807512ECF6DB300BBC172 /* StatiscticsModel.swift */,
+			);
+			path = Statistics;
 			sourceTree = "<group>";
 		};
 		6778BA1E2EC6514B009C02EF = {
@@ -210,6 +223,7 @@
 		678296782EC8EA550056D7AA /* StatisticsScreen */ = {
 			isa = PBXGroup;
 			children = (
+				675807502ECF6A4400BBC172 /* Statistics */,
 				6782964C2EC8E2680056D7AA /* ExerciseStatisticsViewController.swift */,
 				5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */,
 				678296542EC8E2680056D7AA /* StatisticsTableViewCell.swift */,
@@ -306,8 +320,10 @@
 				678296862EC902360056D7AA /* WgerExerciseTableViewCell.swift in Sources */,
 				678296892EC9040B0056D7AA /* WgerCategoryCollectionViewCell.swift in Sources */,
 				678296882EC9040A0056D7AA /* WgerCache.swift in Sources */,
+				675807522ECF6DB300BBC172 /* StatiscticsModel.swift in Sources */,
 				6782965F2EC8E2680056D7AA /* AppDelegate.swift in Sources */,
 				678296602EC8E2680056D7AA /* SceneDelegate.swift in Sources */,
+				6758074F2ECF6A3D00BBC172 /* StatisticsViewModel.swift in Sources */,
 				6782968B2EC9040D0056D7AA /* MainTabBarController.swift in Sources */,
 				678296902EC904120056D7AA /* CustomBackButton.swift in Sources */,
 				6758074B2ECE64CB00BBC172 /* HomeViewModel.swift in Sources */,
