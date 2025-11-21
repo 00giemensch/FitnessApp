@@ -9,6 +9,8 @@ import UIKit
 
 class WgerExercisesViewController: UIViewController {
     
+    weak var coordinator: IAppCoordinator?
+
     private let viewModel: WgerExercisesViewModel
 
     private var isLoading = false
@@ -76,16 +78,6 @@ class WgerExercisesViewController: UIViewController {
         viewModel.loadCategories()
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        if selectedCategoryId == nil {
-//            navigationController?.setNavigationBarHidden(true, animated: animated)
-//        } else {
-//            navigationController?.setNavigationBarHidden(false, animated: animated)
-//        }
-//        updateNavigationBar()
-//    }
-    
     private func bindViewModel() {
         viewModel.onCategoriesChanged = { [weak self] in
             self?.collectionView.reloadData()
@@ -120,12 +112,7 @@ class WgerExercisesViewController: UIViewController {
         tableView.isHidden = true
         
         view.addSubviews(titleLabel, backButton, collectionView, tableView, activityIndicator)
-//        view.addSubview(titleLabel)
-//        view.addSubview(backButton)
-//        view.addSubview(collectionView)
-//        view.addSubview(tableView)
-//        view.addSubview(activityIndicator)
-        
+
         backButton.addTarget(self, action: #selector(backToCategories), for: .touchUpInside)
         
         setupConstraints()
@@ -264,8 +251,7 @@ extension WgerExercisesViewController: UITableViewDelegate {
         
         guard indexPath.row < viewModel.exercises.count else { return }
         let exercise = viewModel.exercises[indexPath.row]
-        let detailVC = WgerExerciseDetailViewController(exerciseId: exercise.id)
-        navigationController?.pushViewController(detailVC, animated: true)
+        coordinator?.showExerciseDetails(exerciseId: exercise.id)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

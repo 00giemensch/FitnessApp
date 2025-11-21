@@ -14,6 +14,9 @@ class WgerExerciseDetailViewController: UIViewController {
     private var exerciseInfo: WgerExerciseInfo?
     private var descriptionTopConstraint: NSLayoutConstraint?
     
+    private let viewModel: WgerExerciseDetailViewModel
+
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,10 +73,12 @@ class WgerExerciseDetailViewController: UIViewController {
         return indicator
     }()
     
-    init(exerciseId: Int) {
+    init(exerciseId: Int, viewModel: WgerExerciseDetailViewModel) {
         self.exerciseId = exerciseId
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
+
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -83,6 +88,35 @@ class WgerExerciseDetailViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         loadExerciseDetails()
+        bindViewModel()
+        viewModel.loadExerciseDetails()
+    }
+    
+    private func bindViewModel() {
+        viewModel.onDataLoaded = { [weak self] in
+            guard let self = self else { return }
+            self.title = self.viewModel.title
+            self.descriptionLabel.text = self.viewModel.descriptionHTML
+        }
+        
+        viewModel.onLoadingStateChanged = { [weak self] isLoading in
+            self?.activityIndicator.isHidden = !isLoading
+            if isLoading {
+                self?.activityIndicator.startAnimating()
+            } else {
+                self?.activityIndicator.stopAnimating()
+            }
+        }
+        
+        viewModel.onError = { [weak self] error in
+            self?.presentError(error)
+        }
+    }
+
+    private func presentError(_ error: Error) {
+        let alert = UIAlertController(title: "Ошибка", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(.init(title: "Ок", style: .default))
+        present(alert, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {

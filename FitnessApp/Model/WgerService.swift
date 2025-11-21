@@ -7,13 +7,20 @@
 
 import Foundation
 
-class WgerService {
+protocol WgerServiceProtocol {
+    func fetchExerciseCategories(completion: @escaping (Result<[WgerCategory], Error>) -> Void)
+    func fetchExercises(categoryId: Int?, completion: @escaping (Result<[WgerExercise], Error>) -> Void)
+    func fetchExerciseDetails(exerciseId: Int, completion: @escaping (Result<WgerExercise, Error>) -> Void)
+    func fetchExerciseDetail(exerciseId: Int, completion: @escaping (Result<WgerExercise, Error>) -> Void)
+}
+
+final class WgerService: WgerServiceProtocol {
     static let shared = WgerService()
     
     private let apiKey = "fe771ab579d9df9302b681e4e78544044d251929"
     private let baseURL = "https://wger.de/api/v2"
     
-    private init() {}
+    init() {}
     
     func fetchLanguages(completion: @escaping (Result<[WgerLanguage], Error>) -> Void) {
         guard let url = URL(string: "\(baseURL)/language/") else {
@@ -525,5 +532,9 @@ class WgerService {
             
             completion(.success(data))
         }.resume()
+    }
+
+    func fetchExerciseDetail(exerciseId: Int, completion: @escaping (Result<WgerExercise, Error>) -> Void) {
+        fetchExerciseDetails(exerciseId: exerciseId, completion: completion)
     }
 }

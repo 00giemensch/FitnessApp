@@ -14,6 +14,11 @@
 		6758074D2ECE747200BBC172 /* StatisticsExerciseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6758074C2ECE747200BBC172 /* StatisticsExerciseCell.swift */; };
 		6758074F2ECF6A3D00BBC172 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6758074E2ECF6A3D00BBC172 /* StatisticsViewModel.swift */; };
 		675807522ECF6DB300BBC172 /* StatiscticsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675807512ECF6DB300BBC172 /* StatiscticsModel.swift */; };
+		6759BC342ED0A99300F277A1 /* WgerExerciseDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759BC332ED0A99300F277A1 /* WgerExerciseDetailViewModel.swift */; };
+		6759BC372ED0B03400F277A1 /* ExerciseStatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759BC362ED0B03400F277A1 /* ExerciseStatisticsViewModel.swift */; };
+		6759BC392ED0B41200F277A1 /* WgerExercisesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759BC382ED0B41200F277A1 /* WgerExercisesViewModel.swift */; };
+		6759BC3B2ED0B57B00F277A1 /* LocalExercisesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759BC3A2ED0B57B00F277A1 /* LocalExercisesViewModel.swift */; };
+		6759BC3E2ED0DE0500F277A1 /* StatisticsModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759BC3D2ED0DE0500F277A1 /* StatisticsModuleFactory.swift */; };
 		6782965C2EC8E2680056D7AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 678296432EC8E2680056D7AA /* LaunchScreen.storyboard */; };
 		6782965D2EC8E2680056D7AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 678296462EC8E2680056D7AA /* Assets.xcassets */; };
 		6782965F2EC8E2680056D7AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296412EC8E2680056D7AA /* AppDelegate.swift */; };
@@ -49,6 +54,11 @@
 		6758074C2ECE747200BBC172 /* StatisticsExerciseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsExerciseCell.swift; sourceTree = "<group>"; };
 		6758074E2ECF6A3D00BBC172 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		675807512ECF6DB300BBC172 /* StatiscticsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatiscticsModel.swift; sourceTree = "<group>"; };
+		6759BC332ED0A99300F277A1 /* WgerExerciseDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerExerciseDetailViewModel.swift; sourceTree = "<group>"; };
+		6759BC362ED0B03400F277A1 /* ExerciseStatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseStatisticsViewModel.swift; sourceTree = "<group>"; };
+		6759BC382ED0B41200F277A1 /* WgerExercisesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerExercisesViewModel.swift; sourceTree = "<group>"; };
+		6759BC3A2ED0B57B00F277A1 /* LocalExercisesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalExercisesViewModel.swift; sourceTree = "<group>"; };
+		6759BC3D2ED0DE0500F277A1 /* StatisticsModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsModuleFactory.swift; sourceTree = "<group>"; };
 		6778BA272EC6514B009C02EF /* FitnessApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitnessApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		678296412EC8E2680056D7AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		678296422EC8E2680056D7AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -92,10 +102,10 @@
 		675807432ECA72D900BBC172 /* InstructionsScreen */ = {
 			isa = PBXGroup;
 			children = (
-				678296812EC902360056D7AA /* WgerExerciseDetailViewController.swift */,
-				678296822EC902360056D7AA /* WgerExercisesViewController.swift */,
+				6759BC322ED0A95D00F277A1 /* ExerciseDetail */,
+				6759BC3C2ED0CB5900F277A1 /* CategoryScreen */,
 				678296832EC902360056D7AA /* WgerExerciseTableViewCell.swift */,
-				6782968A2EC9040C0056D7AA /* WgerCategoryCollectionViewCell.swift */,
+				6759BC382ED0B41200F277A1 /* WgerExercisesViewModel.swift */,
 			);
 			path = InstructionsScreen;
 			sourceTree = "<group>";
@@ -124,6 +134,33 @@
 				678296552EC8E2680056D7AA /* StatisticsViewController.swift */,
 			);
 			path = Statistics;
+			sourceTree = "<group>";
+		};
+		6759BC322ED0A95D00F277A1 /* ExerciseDetail */ = {
+			isa = PBXGroup;
+			children = (
+				678296812EC902360056D7AA /* WgerExerciseDetailViewController.swift */,
+				6759BC332ED0A99300F277A1 /* WgerExerciseDetailViewModel.swift */,
+			);
+			path = ExerciseDetail;
+			sourceTree = "<group>";
+		};
+		6759BC352ED0AFFD00F277A1 /* ExerciseStatistics */ = {
+			isa = PBXGroup;
+			children = (
+				6782964C2EC8E2680056D7AA /* ExerciseStatisticsViewController.swift */,
+				6759BC362ED0B03400F277A1 /* ExerciseStatisticsViewModel.swift */,
+			);
+			path = ExerciseStatistics;
+			sourceTree = "<group>";
+		};
+		6759BC3C2ED0CB5900F277A1 /* CategoryScreen */ = {
+			isa = PBXGroup;
+			children = (
+				6782968A2EC9040C0056D7AA /* WgerCategoryCollectionViewCell.swift */,
+				678296822EC902360056D7AA /* WgerExercisesViewController.swift */,
+			);
+			path = CategoryScreen;
 			sourceTree = "<group>";
 		};
 		6778BA1E2EC6514B009C02EF = {
@@ -208,6 +245,7 @@
 			children = (
 				678296532EC8E2680056D7AA /* LocalExercisesViewController.swift */,
 				675807462ECB76B500BBC172 /* Model */,
+				6759BC3A2ED0B57B00F277A1 /* LocalExercisesViewModel.swift */,
 			);
 			path = ExercisesScreen;
 			sourceTree = "<group>";
@@ -225,10 +263,11 @@
 			isa = PBXGroup;
 			children = (
 				675807502ECF6A4400BBC172 /* Statistics */,
-				6782964C2EC8E2680056D7AA /* ExerciseStatisticsViewController.swift */,
-				5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */,
+				6759BC352ED0AFFD00F277A1 /* ExerciseStatistics */,
 				678296542EC8E2680056D7AA /* StatisticsTableViewCell.swift */,
 				6758074C2ECE747200BBC172 /* StatisticsExerciseCell.swift */,
+				5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */,
+				6759BC3D2ED0DE0500F277A1 /* StatisticsModuleFactory.swift */,
 			);
 			path = StatisticsScreen;
 			sourceTree = "<group>";
@@ -315,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				678296842EC902360056D7AA /* WgerExerciseDetailViewController.swift in Sources */,
+				6759BC372ED0B03400F277A1 /* ExerciseStatisticsViewModel.swift in Sources */,
 				678296852EC902360056D7AA /* WgerExercisesViewController.swift in Sources */,
 				675807482ECE5A2C00BBC172 /* AppCoordinator.swift in Sources */,
 				678296862EC902360056D7AA /* WgerExerciseTableViewCell.swift in Sources */,
@@ -332,12 +372,16 @@
 				678296802EC901FC0056D7AA /* WgerService.swift in Sources */,
 				678296622EC8E2680056D7AA /* CoreDataManager.swift in Sources */,
 				678296662EC8E2680056D7AA /* ExerciseStatisticsViewController.swift in Sources */,
+				6759BC392ED0B41200F277A1 /* WgerExercisesViewModel.swift in Sources */,
 				5EEE432D7C964AD0B25BBF8764DBCC73 /* BestResultChartView.swift in Sources */,
 				678296692EC8E2680056D7AA /* FitnessApp.xcdatamodeld in Sources */,
 				6782966A2EC8E2680056D7AA /* HomeViewController.swift in Sources */,
+				6759BC3E2ED0DE0500F277A1 /* StatisticsModuleFactory.swift in Sources */,
 				6782966B2EC8E2680056D7AA /* LocalExercise.swift in Sources */,
 				6782966C2EC8E2680056D7AA /* LocalExercisesViewController.swift in Sources */,
 				6782966D2EC8E2680056D7AA /* StatisticsTableViewCell.swift in Sources */,
+				6759BC3B2ED0B57B00F277A1 /* LocalExercisesViewModel.swift in Sources */,
+				6759BC342ED0A99300F277A1 /* WgerExerciseDetailViewModel.swift in Sources */,
 				6758074D2ECE747200BBC172 /* StatisticsExerciseCell.swift in Sources */,
 				6782966E2EC8E2680056D7AA /* StatisticsViewController.swift in Sources */,
 				678296702EC8E2680056D7AA /* Workout.swift in Sources */,

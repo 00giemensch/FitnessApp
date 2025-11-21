@@ -12,10 +12,12 @@ protocol IAppCoordinator: AnyObject {
     func showWorkoutSelection()
     func showWorkout(exerciseId: String, exerciseName: String)
     func showExerciseStatistics(exerciseId: String)
-    func showExerciseDetails(exerciceId: Int)
+    func showExerciseDetails(exerciseId: Int)
 }
 
 final class AppCoordinator: IAppCoordinator {
+
+    private let wgerService: WgerServiceProtocol
     
     private weak var window: UIWindow?
     
@@ -35,7 +37,6 @@ final class AppCoordinator: IAppCoordinator {
     
     func showWorkout(exerciseId: String, exerciseName: String) {
         let workoutVC = WorkoutViewController(exerciseId: exerciseId, exerciseName: exerciseName)
-        workoutVC.coordinator = self
         currentNavigationController?.pushViewController(workoutVC, animated: true)
     }
     
@@ -46,8 +47,8 @@ final class AppCoordinator: IAppCoordinator {
     }
     
     func showExerciseDetails(exerciseId: Int) {
-        let detailVC = WgerExerciseDetailViewController(exerciseId: exerciseId)
-        detailVC.coordinator = self
+        let viewModel = WgerExerciseDetailViewModel(exerciseId: exerciseId, service: wgerService)
+        let detailVC = WgerExerciseDetailViewController(exerciseId: exerciseId, viewModel: viewModel)
         currentNavigationController?.pushViewController(detailVC, animated: true)
     }
     
@@ -61,12 +62,13 @@ final class AppCoordinator: IAppCoordinator {
     let statiscticsNavigationController = UINavigationController()
     let exercisesNavigationController = UINavigationController()
     
-    public init() {
+    public init(service: WgerServiceProtocol = WgerService()) {
         tabBarController.viewControllers = [
             homeNavigationController,
             exercisesNavigationController,
             statiscticsNavigationController
         ]
+        self.wgerService = service
     }
     
     func start(with window: UIWindow) {
@@ -84,12 +86,12 @@ final class AppCoordinator: IAppCoordinator {
         homeNavigationController.tabBarItem = UITabBarItem(title: "Главная", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         //homeVC.setupCustomBackButton()
         
-        let statisticsVC = StatisticsViewController()
-        statisticsVC.coordinator = self
+        let statisticsVC = StatisticsModuleFactory.makeStatisticsModule(coordinator: self)
         statiscticsNavigationController.setViewControllers([statisticsVC], animated: false)
         statiscticsNavigationController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(systemName: "chart.bar"), selectedImage: UIImage(systemName: "chart.bar.fill"))
         
-        let exercisesVC = WgerExercisesViewController()
+        let exercisesViewModel = WgerExercisesViewModel(service: wgerService)
+        let exercisesVC = WgerExercisesViewController(viewModel: exercisesViewModel)
         exercisesVC.coordinator = self
         exercisesNavigationController.setViewControllers([exercisesVC], animated: false)
         exercisesNavigationController.tabBarItem = UITabBarItem(title: "Инструкции", image: UIImage(systemName: "dumbbell"), selectedImage: UIImage(systemName: "dumbbell.fill"))

@@ -7,63 +7,59 @@
 
 import Foundation
 
-class StatisticsViewModel {
-    
-    weak var coordinator: IAppCoordinator?
-    
-    var onEmpty: ((Bool) -> Void)?
-    var onReloadData: (() -> Void)?
-    
-    private var exercises: [ExerciseStatsItem] = []
-    
-    func countOfExercises() -> Int {
-        exercises.count
+final class StatisticsViewModel {
+    private let coordinator: IAppCoordinator
+    private let workoutManager: WorkoutManager
+    private let goalManager: GoalManager
+
+    private(set) var exercises: [ExerciseStatsItem] = []
+
+    init(
+        coordinator: IAppCoordinator,
+        workoutManager: WorkoutManager = .shared,
+        goalManager: GoalManager = .shared
+    ) {
+        self.coordinator = coordinator
+        self.workoutManager = workoutManager
+        self.goalManager = goalManager
     }
-    
-    func getModel() -> [ExerciseStatsItem] {
-        return exercises
-    }
-    
-    func removeItem(index: Int) {
-        exercises.remove(at: index)
-        if exercises.isEmpty {
-            onEmpty?(true)
-        }
-    }
-    
-    func exerciseSelected(exerciseId: String) {
-        coordinator?.showExerciseStatistics(exerciseId: exerciseId)
-    }
-    
-    func loadWorkouts() {
-        let allWorkouts = WorkoutManager.shared.getAllWorkouts()
+
+    func loadWorkouts(
+        onEmptyState: @escaping (Bool) -> Void,
+        onCompletion: @escaping () -> Void
+    ) {
+        let allWorkouts = workoutManager.getAllWorkouts()
         let exerciseIds = Set(allWorkouts.map { $0.exerciseId })
-        
+        print("StatisticsViewModel: loaded \(allWorkouts.count) workouts - exercise IDs: \(exerciseIds)")
+
         exercises = exerciseIds.compactMap { exerciseId in
             guard let workout = allWorkouts.first(where: { $0.exerciseId == exerciseId }) else { return nil }
             return ExerciseStatsItem(exerciseId: exerciseId, exerciseName: workout.exerciseName)
         }.sorted { $0.exerciseName < $1.exerciseName }
-        
-        if exercises.isEmpty {
-            //emptyStateLabel.isHidden = false
-            //tableView.isHidden = true
-            onEmpty?(false)
-        } else {
-            //emptyStateLabel.isHidden = true
-            //tableView.isHidden = false
-            onEmpty?(true)
-        }
-        
-        //tableView.reloadData()
-        onReloadData?()
+        let names = exercises.map { $0.exerciseName }
+        print("StatisticsViewModel: built exercise list names = \(names)")
+
+        onEmptyState(exercises.isEmpty)
+        onCompletion()
     }
-    
-    func deleteWorkoutsForExercise(exerciseId: String) {
-        WorkoutManager.shared.deleteWorkoutsForExercise(exerciseId: exerciseId)
+
+    func countOfExercises() -> Int {
+        exercises.count
     }
-    
-    func deleteGoals(exerciseId: String) {
-        GoalManager.shared.deleteGoalsForExercise(exerciseId: exerciseId)
+
+    func getModel() -> [ExerciseStatsItem] {
+        exercises
     }
-    
+
+    func deleteExercise(at index: Int) {
+        guard index >= 0, index < exercises.count else { return }
+        let exercise = exercises[index]
+        workoutManager.deleteWorkoutsForExercise(exerciseId: exercise.exerciseId)
+        goalManager.deleteGoalsForExercise(exerciseId: exercise.exerciseId)
+        exercises.remove(at: index)
+    }
+
+    func exerciseSelected(exerciseId: String) {
+        coordinator.showExerciseStatistics(exerciseId: exerciseId)
+    }
 }

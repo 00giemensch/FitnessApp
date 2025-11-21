@@ -8,6 +8,10 @@
 import UIKit
 import Foundation
 
-class HomeViewModel {
+final class HomeViewModel {
+    weak var coordinator: IAppCoordinator?
 
+    func startWorkoutButtonTapped() {
+        coordinator?.showWorkoutSelection()
+    }
 }

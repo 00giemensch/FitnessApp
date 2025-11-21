@@ -9,6 +9,8 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
+    weak var coordinator: IAppCoordinator?
+
     private let viewModel = HomeViewModel()
     
     private let logoImageView: UIImageView = {
@@ -60,8 +62,9 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupActions()
+        bindViewModel()
     }
-    
+
     private func setupUI() {
         view.backgroundColor = .systemBackground
         navigationController?.setNavigationBarHidden(true, animated: false)
@@ -92,9 +95,12 @@ class HomeViewController: UIViewController {
     private func setupActions() {
         startWorkoutButton.addTarget(self, action: #selector(startWorkoutTapped), for: .touchUpInside)
     }
+
+    private func bindViewModel() {
+        viewModel.coordinator = coordinator
+    }
     
     @objc private func startWorkoutTapped() {
-        let localExercisesVC = LocalExercisesViewController()
-        navigationController?.pushViewController(localExercisesVC, animated: true)
+        viewModel.startWorkoutButtonTapped()
     }
 }

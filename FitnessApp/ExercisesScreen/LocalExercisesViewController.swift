@@ -8,8 +8,10 @@
 import UIKit
 
 class LocalExercisesViewController: UIViewController {
-    
-    private let exercises = LocalExercise.allExercises
+
+    weak var coordinator: IAppCoordinator?
+
+    private let viewModel: LocalExercisesViewModel
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -29,10 +31,19 @@ class LocalExercisesViewController: UIViewController {
         return stackView
     }()
     
+    init(viewModel: LocalExercisesViewModel = LocalExercisesViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupExercises()
+        bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,13 +70,21 @@ class LocalExercisesViewController: UIViewController {
         ])
     }
     
-    private func setupExercises() {
-        for exercise in exercises {
+    private func bindViewModel() {
+        viewModel.onExercisesChanged = { [weak self] in
+            self?.stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+            self?.setupExerciseButtons()
+        }
+        viewModel.refresh()
+    }
+    
+    private func setupExerciseButtons() {
+        for exercise in viewModel.exercises {
             let button = createExerciseButton(exercise: exercise)
             stackView.addArrangedSubview(button)
         }
     }
-    
+
     private func createExerciseButton(exercise: LocalExercise) -> UIButton {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -85,19 +104,18 @@ class LocalExercisesViewController: UIViewController {
             button.isEnabled = false
         }
         
-        button.tag = exercises.firstIndex(where: { $0.id == exercise.id }) ?? 0
+        button.tag = viewModel.exercises.firstIndex(where: { $0.id == exercise.id }) ?? 0
         return button
     }
     
     @objc private func exerciseTapped(_ sender: UIButton) {
-        let exercise = exercises[sender.tag]
-        if exercise.isAvailable {
-            startWorkout(exercise: exercise)
-        }
+        guard let exercise = viewModel.startWorkout(for: sender.tag) else { return }
+        startWorkout(exercise: exercise)
     }
     
     private func startWorkout(exercise: LocalExercise) {
-        let workoutVC = WorkoutViewController(exerciseId: exercise.id, exerciseName: exercise.name)
-        navigationController?.pushViewController(workoutVC, animated: true)
+        let name = exercise.name ?? "Упражнение #\(exercise.id)"
+        coordinator?.showWorkout(exerciseId: exercise.id, exerciseName: name)
     }
+
 }
