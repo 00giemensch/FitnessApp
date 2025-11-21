@@ -11,25 +11,9 @@ class MainTabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        setupTabBar()
         setupCustomTabBar()
     }
-    
-//    private func setupTabBar() {
-//        let homeVC = UINavigationController(rootViewController: HomeViewController())
-//        homeVC.tabBarItem = UITabBarItem(title: "Главная", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
-//        homeVC.setupCustomBackButton()
-//        
-//        let statisticsVC = UINavigationController(rootViewController: StatisticsViewController())
-//        statisticsVC.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(systemName: "chart.bar"), selectedImage: UIImage(systemName: "chart.bar.fill"))
-//        
-//        let exercisesVC = UINavigationController(rootViewController: WgerExercisesViewController())
-//        exercisesVC.tabBarItem = UITabBarItem(title: "Инструкции", image: UIImage(systemName: "dumbbell"), selectedImage: UIImage(systemName: "dumbbell.fill"))
-//        
-//        viewControllers = [homeVC, statisticsVC, exercisesVC]
-//        
-//        tabBar.unselectedItemTintColor = .gray
-//    }
+
     
     private func setupCustomTabBar() {
         tabBar.clipsToBounds = true
