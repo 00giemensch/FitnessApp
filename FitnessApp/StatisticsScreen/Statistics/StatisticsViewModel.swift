@@ -30,15 +30,10 @@ final class StatisticsViewModel {
     ) {
         let allWorkouts = workoutManager.getAllWorkouts()
         let exerciseIds = Set(allWorkouts.map { $0.exerciseId })
-        print("StatisticsViewModel: loaded \(allWorkouts.count) workouts - exercise IDs: \(exerciseIds)")
-
         exercises = exerciseIds.compactMap { exerciseId in
             guard let workout = allWorkouts.first(where: { $0.exerciseId == exerciseId }) else { return nil }
             return ExerciseStatsItem(exerciseId: exerciseId, exerciseName: workout.exerciseName)
         }.sorted { $0.exerciseName < $1.exerciseName }
-        let names = exercises.map { $0.exerciseName }
-        print("StatisticsViewModel: built exercise list names = \(names)")
-
         onEmptyState(exercises.isEmpty)
         onCompletion()
     }

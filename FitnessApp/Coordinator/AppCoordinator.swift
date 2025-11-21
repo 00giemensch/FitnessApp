@@ -62,7 +62,7 @@ final class AppCoordinator: IAppCoordinator {
     let statiscticsNavigationController = UINavigationController()
     let exercisesNavigationController = UINavigationController()
     
-    public init(service: WgerServiceProtocol = WgerService()) {
+    public init(service: WgerServiceProtocol = WgerService()) { //'WgerService' initializer is inaccessible due to 'private' protection level
         tabBarController.viewControllers = [
             homeNavigationController,
             exercisesNavigationController,
