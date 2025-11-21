@@ -198,7 +198,6 @@ class WgerExerciseDetailViewController: UIViewController {
                     self?.exercise = WgerExercise(from: info)
                     self?.configureContent()
                 case .failure(let error):
-                    print("❌ Error loading exercise info: \(error.localizedDescription)")
                     WgerService.shared.fetchExerciseDetails(exerciseId: self?.exerciseId ?? 0) { result in
                         switch result {
                         case .success(let exercise):

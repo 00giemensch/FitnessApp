@@ -119,14 +119,16 @@ class ExerciseStatisticsViewController: UIViewController {
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubview(totalRepetitionsLabel)
-        contentView.addSubview(bestResultLabel)
-        contentView.addSubview(periodSegmentedControl)
-        contentView.addSubview(chartView)
-        contentView.addSubview(averageLabel)
-        contentView.addSubview(periodLabel)
-        contentView.addSubview(addGoalButton)
         
+        contentView.addSubviews(totalRepetitionsLabel, bestResultLabel, periodSegmentedControl, chartView, averageLabel, periodLabel, addGoalButton)
+//
+//        contentView.addSubview(totalRepetitionsLabel)
+//        contentView.addSubview(bestResultLabel)
+//        contentView.addSubview(periodSegmentedControl)
+//        contentView.addSubview(chartView)
+//        contentView.addSubview(averageLabel)
+//        contentView.addSubview(periodLabel)
+//        contentView.addSubview(addGoalButton)
         setupConstraints()
         
         addGoalButton.addTarget(self, action: #selector(addGoalTapped), for: .touchUpInside)

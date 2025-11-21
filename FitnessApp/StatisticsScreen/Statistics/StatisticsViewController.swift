@@ -68,7 +68,6 @@ class StatisticsViewController: UIViewController {
 
     private func refreshData() {
         viewModel.loadWorkouts(onEmptyState: { [weak self] isEmpty in
-            print("toggleEmptyState called with isEmpty = \(isEmpty)")
             self?.toggleEmptyState(isEmpty: isEmpty)
         }, onCompletion: { [weak self] in
             self?.reloadData()
@@ -118,7 +117,6 @@ class StatisticsViewController: UIViewController {
     private func reloadData() {
         tableView.reloadData()
         let hasData = viewModel.countOfExercises() > 0
-        print("StatisticsViewController: reloadData hasData=\(hasData)")
         emptyStateLabel.isHidden = hasData
         tableView.isHidden = !hasData
     }
@@ -127,15 +125,12 @@ class StatisticsViewController: UIViewController {
 
 extension StatisticsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count = viewModel.countOfExercises()
-        print("StatisticsViewController: numberOfRows = \(count)")
-        return count
+        return viewModel.countOfExercises()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ExerciseCell", for: indexPath) as! StatisticsExerciseCell
         let exercise = viewModel.getModel()[indexPath.row]
-        print("StatisticsViewController: cell for \(exercise.exerciseName)")
         cell.configure(with: exercise.exerciseName)
         cell.setNeedsLayout()
         cell.layoutIfNeeded()
