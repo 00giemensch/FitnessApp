@@ -57,7 +57,6 @@ class StatisticsViewController: UIViewController {
         setupView()
         setupTableView()
         refreshData()
-        subscribeViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,9 +82,7 @@ class StatisticsViewController: UIViewController {
         setupConstraints()
     }
     
-    private func subscribeViewModel() {
-        // Nothing additional, callbacks passed as arguments
-    }
+
     
     private func setupTableView() {
         tableView.delegate = self
@@ -168,12 +165,6 @@ extension StatisticsViewController: UITableViewDataSource, UITableViewDelegate {
                 guard let self = self else { return }
                 viewModel.deleteExercise(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .fade)
-
-                
-//                if self.exercises.isEmpty {
-//                    self.tableView.isHidden = true
-//                    self.emptyStateLabel.isHidden = false
-//                }
             })
             
             present(alert, animated: true)

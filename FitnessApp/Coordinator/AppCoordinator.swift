@@ -62,7 +62,7 @@ final class AppCoordinator: IAppCoordinator {
     let statiscticsNavigationController = UINavigationController()
     let exercisesNavigationController = UINavigationController()
     
-    public init(service: WgerServiceProtocol = WgerService()) { //'WgerService' initializer is inaccessible due to 'private' protection level
+    public init(service: WgerServiceProtocol = WgerService()) {
         tabBarController.viewControllers = [
             homeNavigationController,
             exercisesNavigationController,
@@ -84,7 +84,6 @@ final class AppCoordinator: IAppCoordinator {
         homeVC.coordinator = self
         homeNavigationController.setViewControllers([homeVC], animated: false)
         homeNavigationController.tabBarItem = UITabBarItem(title: "Главная", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
-        //homeVC.setupCustomBackButton()
         
         let statisticsVC = StatisticsModuleFactory.makeStatisticsModule(coordinator: self)
         statiscticsNavigationController.setViewControllers([statisticsVC], animated: false)

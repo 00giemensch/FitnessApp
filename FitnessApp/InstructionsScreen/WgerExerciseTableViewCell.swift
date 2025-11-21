@@ -62,9 +62,7 @@ class WgerExerciseTableViewCell: UITableViewCell {
         backgroundColor = .clear
         selectionStyle = .none
         contentView.addSubview(containerView)
-//        containerView.addSubview(exerciseImageView)
-//        containerView.addSubview(nameLabel)
-//        containerView.addSubview(descriptionLabel)
+
         containerView.addSubviews(exerciseImageView, nameLabel, descriptionLabel)
         
         setupConstraints()
