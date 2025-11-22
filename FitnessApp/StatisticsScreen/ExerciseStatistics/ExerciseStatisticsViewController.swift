@@ -12,6 +12,8 @@ class ExerciseStatisticsViewController: UIViewController {
     weak var coordinator: IAppCoordinator?
     
     private let exerciseId: String
+    private let workoutManager: WorkoutManagerProtocol
+    private let goalManager: GoalManagerProtocol
     private var workouts: [Workout] = []
     
     private let scrollView: UIScrollView = {
@@ -87,8 +89,14 @@ class ExerciseStatisticsViewController: UIViewController {
         return button
     }()
     
-    init(exerciseId: String) {
+    init(
+        exerciseId: String,
+        workoutManager: WorkoutManagerProtocol,
+        goalManager: GoalManagerProtocol
+    ) {
         self.exerciseId = exerciseId
+        self.workoutManager = workoutManager
+        self.goalManager = goalManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -173,7 +181,7 @@ class ExerciseStatisticsViewController: UIViewController {
     }
     
     private func loadData() {
-        workouts = WorkoutManager.shared.getWorkoutsForExercise(exerciseId: exerciseId)
+        workouts = workoutManager.getWorkoutsForExercise(exerciseId: exerciseId)
         
         if let firstWorkout = workouts.first {
             title = firstWorkout.exerciseName
@@ -188,8 +196,8 @@ class ExerciseStatisticsViewController: UIViewController {
         let totalReps = workouts.reduce(0) { $0 + $1.totalRepetitions }
         let bestResult = workouts.map { $0.bestResult }.max() ?? 0
         
-        let totalRepsGoal = GoalManager.shared.getGoal(exerciseId: exerciseId, type: .totalRepetitions)
-        let bestResultGoal = GoalManager.shared.getGoal(exerciseId: exerciseId, type: .bestResult)
+        let totalRepsGoal = goalManager.getGoal(exerciseId: exerciseId, type: .totalRepetitions)
+        let bestResultGoal = goalManager.getGoal(exerciseId: exerciseId, type: .bestResult)
         
         if let totalGoal = totalRepsGoal {
             totalRepetitionsLabel.text = "Общее кол-во повторений: \(totalReps)/\(totalGoal.value)"
@@ -280,7 +288,7 @@ class ExerciseStatisticsViewController: UIViewController {
             }
             
             let goal = WorkoutGoal(exerciseId: self.exerciseId, type: type, value: value)
-            GoalManager.shared.saveGoal(goal)
+            self.goalManager.saveGoal(goal)
             self.loadData()
         })
         

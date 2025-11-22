@@ -13,13 +13,21 @@ final class ExerciseStatisticsViewModel {
 
     private(set) var workouts: [Workout] = []
     private let exerciseId: String
+    private let workoutManager: WorkoutManagerProtocol
+    private let goalManager: GoalManagerProtocol
 
-    init(exerciseId: String) {
+    init(
+        exerciseId: String,
+        workoutManager: WorkoutManagerProtocol,
+        goalManager: GoalManagerProtocol
+    ) {
         self.exerciseId = exerciseId
+        self.workoutManager = workoutManager
+        self.goalManager = goalManager
     }
 
     func loadWorkouts() {
-        workouts = WorkoutManager.shared.getWorkoutsForExercise(exerciseId: exerciseId)
+        workouts = workoutManager.getWorkoutsForExercise(exerciseId: exerciseId)
         onDataChanged?()
     }
 
@@ -39,7 +47,7 @@ final class ExerciseStatisticsViewModel {
 
     func saveGoal(type: GoalType, value: Int) {
         let goal = WorkoutGoal(exerciseId: exerciseId, type: type, value: value)
-        GoalManager.shared.saveGoal(goal)
+        goalManager.saveGoal(goal)
         loadWorkouts()
     }
 }

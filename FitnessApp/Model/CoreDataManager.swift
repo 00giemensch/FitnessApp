@@ -9,22 +9,39 @@ import Foundation
 import CoreData
 import UIKit
 
-class CoreDataManager {
-    static let shared = CoreDataManager()
+protocol CoreDataManagerProtocol {
+    func save()
+    func delete(_ object: NSManagedObject)
+    func create<T: NSManagedObject>(_ type: T.Type) -> T
+    func fetch<T: NSManagedObject>(_ request: NSFetchRequest<T>) throws -> [T]
+}
+
+final class CoreDataManager: CoreDataManagerProtocol {
+    private let context: NSManagedObjectContext
     
-    private init() {}
-    
-    var context: NSManagedObjectContext {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            fatalError("Unable to get AppDelegate")
-        }
-        return appDelegate.persistentContainer.viewContext
+    init(context: NSManagedObjectContext) {
+        self.context = context
     }
     
-    func saveContext() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
+    func save() {
+        guard context.hasChanges else { return }
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context: \(error)")
         }
-        appDelegate.saveContext()
+    }
+    
+    func delete(_ object: NSManagedObject) {
+        context.delete(object)
+    }
+    
+    func create<T: NSManagedObject>(_ type: T.Type) -> T {
+        let entityName = String(describing: type)
+        return NSEntityDescription.insertNewObject(forEntityName: entityName, into: context) as! T
+    }
+    
+    func fetch<T: NSManagedObject>(_ request: NSFetchRequest<T>) throws -> [T] {
+        return try context.fetch(request)
     }
 }

@@ -15,6 +15,7 @@ class WorkoutViewController: UIViewController {
     
     private let exerciseId: String
     private let exerciseName: String
+    private let workoutManager: WorkoutManagerProtocol
     private var sets: [WorkoutSetData] = []
     private var setsStackView: UIStackView!
     
@@ -71,9 +72,10 @@ class WorkoutViewController: UIViewController {
         return button
     }()
     
-    init(exerciseId: String, exerciseName: String) {
+    init(exerciseId: String, exerciseName: String, workoutManager: WorkoutManagerProtocol) {
         self.exerciseId = exerciseId
         self.exerciseName = exerciseName
+        self.workoutManager = workoutManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -206,7 +208,7 @@ class WorkoutViewController: UIViewController {
             return
         }
         
-        let allWorkouts = WorkoutManager.shared.getAllWorkouts()
+        let allWorkouts = workoutManager.getAllWorkouts()
         
         if let existingWorkout = allWorkouts.first(where: { workout in
             workout.exerciseId == exerciseId &&
@@ -223,7 +225,7 @@ class WorkoutViewController: UIViewController {
                 date: existingWorkout.date
             )
             
-            WorkoutManager.shared.saveWorkout(updatedWorkout)
+            workoutManager.saveWorkout(updatedWorkout)
         } else {
             let workout = Workout(
                 id: UUID().uuidString,
@@ -233,7 +235,7 @@ class WorkoutViewController: UIViewController {
                 date: Date()
             )
             
-            WorkoutManager.shared.saveWorkout(workout)
+            workoutManager.saveWorkout(workout)
         }
         
         navigationController?.popToRootViewController(animated: true)

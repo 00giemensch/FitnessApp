@@ -15,6 +15,7 @@ class WgerExerciseDetailViewController: UIViewController {
     private var descriptionTopConstraint: NSLayoutConstraint?
     
     private let viewModel: WgerExerciseDetailViewModel
+    private let service: WgerServiceProtocol
 
     
     private let scrollView: UIScrollView = {
@@ -73,9 +74,10 @@ class WgerExerciseDetailViewController: UIViewController {
         return indicator
     }()
     
-    init(exerciseId: Int, viewModel: WgerExerciseDetailViewModel) {
+    init(exerciseId: Int, viewModel: WgerExerciseDetailViewModel, service: WgerServiceProtocol) {
         self.exerciseId = exerciseId
         self.viewModel = viewModel
+        self.service = service
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -87,7 +89,6 @@ class WgerExerciseDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        loadExerciseDetails()
         bindViewModel()
         viewModel.loadExerciseDetails()
     }
@@ -95,8 +96,9 @@ class WgerExerciseDetailViewController: UIViewController {
     private func bindViewModel() {
         viewModel.onDataLoaded = { [weak self] in
             guard let self = self else { return }
+            self.exercise = self.viewModel.exercise
             self.title = self.viewModel.title
-            self.descriptionLabel.text = self.viewModel.descriptionHTML
+            self.configureContent()
         }
         
         viewModel.onLoadingStateChanged = { [weak self] isLoading in
@@ -185,32 +187,6 @@ class WgerExerciseDetailViewController: UIViewController {
         ])
     }
     
-    private func loadExerciseDetails() {
-        activityIndicator.startAnimating()
-        
-        WgerService.shared.fetchExerciseInfo(exerciseId: exerciseId) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.activityIndicator.stopAnimating()
-                
-                switch result {
-                case .success(let info):
-                    self?.exerciseInfo = info
-                    self?.exercise = WgerExercise(from: info)
-                    self?.configureContent()
-                case .failure(let error):
-                    WgerService.shared.fetchExerciseDetails(exerciseId: self?.exerciseId ?? 0) { result in
-                        switch result {
-                        case .success(let exercise):
-                            self?.exercise = exercise
-                            self?.configureContent()
-                        case .failure:
-                            self?.showError(message: "Не удалось загрузить упражнение: \(error.localizedDescription)")
-                        }
-                    }
-                }
-            }
-        }
-    }
     
     private func configureContent() {
         guard let exercise = exercise else { return }
@@ -290,7 +266,7 @@ class WgerExerciseDetailViewController: UIViewController {
     }
     
     private func loadImage(from url: URL) {
-        WgerService.shared.fetchExerciseImage(imageURL: url.absoluteString) { [weak self] result in
+        service.fetchExerciseImage(imageURL: url.absoluteString) { [weak self] (result: Result<Data, Error>) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let imageData):

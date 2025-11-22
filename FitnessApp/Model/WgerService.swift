@@ -12,15 +12,17 @@ protocol WgerServiceProtocol {
     func fetchExercises(categoryId: Int?, completion: @escaping (Result<[WgerExercise], Error>) -> Void)
     func fetchExerciseDetails(exerciseId: Int, completion: @escaping (Result<WgerExercise, Error>) -> Void)
     func fetchExerciseDetail(exerciseId: Int, completion: @escaping (Result<WgerExercise, Error>) -> Void)
+    func fetchExerciseImage(imageURL: String, completion: @escaping (Result<Data, Error>) -> Void)
 }
 
 final class WgerService: WgerServiceProtocol {
-    static let shared = WgerService()
-
     private let apiKey = "fe771ab579d9df9302b681e4e78544044d251929"
     private let baseURL = "https://wger.de/api/v2"
+    private let cache: WgerCacheProtocol
 
-    init() {}
+    init(cache: WgerCacheProtocol = WgerCache()) {
+        self.cache = cache
+    }
 
     // MARK: - Helpers
     private func performRequest<T: Decodable>(url: URL, completion: @escaping (Result<T, Error>) -> Void) {
@@ -59,7 +61,7 @@ final class WgerService: WgerServiceProtocol {
 
     // MARK: - Public API
     func fetchExerciseCategories(completion: @escaping (Result<[WgerCategory], Error>) -> Void) {
-        if let cached = WgerCache.shared.getCategories() {
+        if let cached = cache.getCategories() {
             completion(.success(cached))
             return
         }
@@ -75,10 +77,10 @@ final class WgerService: WgerServiceProtocol {
         performRequest(url: url) { (result: Result<WgerCategoryResponse, Error>) in
             switch result {
             case .success(let response):
-                WgerCache.shared.saveCategories(response.results)
+                self.cache.saveCategories(response.results)
                 completion(.success(response.results))
             case .failure(let error):
-                if let cached = WgerCache.shared.getCategories() {
+                if let cached = self.cache.getCategories() {
                     completion(.success(cached))
                 } else {
                     completion(.failure(error))
@@ -88,7 +90,7 @@ final class WgerService: WgerServiceProtocol {
     }
 
     func fetchExercises(categoryId: Int? = nil, completion: @escaping (Result<[WgerExercise], Error>) -> Void) {
-        if let categoryId = categoryId, let cached = WgerCache.shared.getExercises(categoryId: categoryId) {
+        if let categoryId = categoryId, let cached = cache.getExercises(categoryId: categoryId) {
             completion(.success(cached))
             return
         }
@@ -109,11 +111,11 @@ final class WgerService: WgerServiceProtocol {
             switch result {
             case .success(let response):
                 if let categoryId = categoryId {
-                    WgerCache.shared.saveExercises(response.results, categoryId: categoryId)
+                    self.cache.saveExercises(response.results, categoryId: categoryId)
                 }
                 completion(.success(response.results))
             case .failure(let error):
-                if let categoryId = categoryId, let cached = WgerCache.shared.getExercises(categoryId: categoryId) {
+                if let categoryId = categoryId, let cached = self.cache.getExercises(categoryId: categoryId) {
                     completion(.success(cached))
                 } else {
                     completion(.failure(error))
@@ -127,10 +129,10 @@ final class WgerService: WgerServiceProtocol {
             switch result {
             case .success(let info):
                 let exercise = WgerExercise(from: info)
-                WgerCache.shared.saveExerciseDetails(exercise, exerciseId: exerciseId)
+                self.cache.saveExerciseDetails(exercise, exerciseId: exerciseId)
                 completion(.success(exercise))
             case .failure(let error):
-                if let cached = WgerCache.shared.getExerciseDetails(exerciseId: exerciseId) {
+                if let cached = self.cache.getExerciseDetails(exerciseId: exerciseId) {
                     completion(.success(cached))
                 } else {
                     completion(.failure(error))
