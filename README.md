@@ -1,6 +1,6 @@
 # FitnessApp
 
-![FitnessApp Demo](fitnessGif.gif)
+![fitnessGif](https://github.com/user-attachments/assets/7facce60-f5f5-4902-ae4a-3788689730ae)
 
 iOS приложение для отслеживания тренировок и статистики упражнений.
 
@@ -76,14 +76,20 @@ FitnessApp/
 ## Установка
 
 1. Клонируйте репозиторий:
-git clone https://github.com/yourusername/FitnessApp.git2. Откройте проект в Xcode:
+```
+   git clone https://github.com/00giemensch/FitnessApp.git
+```
+2. Откройте проект в Xcode:
+```
 cd FitnessApp
-open FitnessApp.xcodeproj3. Соберите и запустите проект (⌘R)
+open FitnessApp.xcodeproj
+```
+3. Соберите и запустите проект в Xcode (нажмите ⌘R).
 
 ## Требования
 
 - Xcode 14.0+
-- iOS 13.0+
+- iOS 15.0+
 - Swift 5.0+
 
 ## Структура данных
