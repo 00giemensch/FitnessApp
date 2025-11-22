@@ -19,6 +19,9 @@
 		6759BC392ED0B41200F277A1 /* WgerExercisesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759BC382ED0B41200F277A1 /* WgerExercisesViewModel.swift */; };
 		6759BC3B2ED0B57B00F277A1 /* LocalExercisesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759BC3A2ED0B57B00F277A1 /* LocalExercisesViewModel.swift */; };
 		6759BC3E2ED0DE0500F277A1 /* StatisticsModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759BC3D2ED0DE0500F277A1 /* StatisticsModuleFactory.swift */; };
+		6759BC402ED2030500F277A1 /* GoalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759BC3F2ED2030500F277A1 /* GoalManager.swift */; };
+		6759BC422ED2033F00F277A1 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759BC412ED2033F00F277A1 /* WorkoutManager.swift */; };
+		6759BC442ED2040100F277A1 /* WorkoutEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759BC432ED2040100F277A1 /* WorkoutEntity+Mapping.swift */; };
 		6782965C2EC8E2680056D7AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 678296432EC8E2680056D7AA /* LaunchScreen.storyboard */; };
 		6782965D2EC8E2680056D7AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 678296462EC8E2680056D7AA /* Assets.xcassets */; };
 		6782965F2EC8E2680056D7AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678296412EC8E2680056D7AA /* AppDelegate.swift */; };
@@ -59,6 +62,9 @@
 		6759BC382ED0B41200F277A1 /* WgerExercisesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WgerExercisesViewModel.swift; sourceTree = "<group>"; };
 		6759BC3A2ED0B57B00F277A1 /* LocalExercisesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalExercisesViewModel.swift; sourceTree = "<group>"; };
 		6759BC3D2ED0DE0500F277A1 /* StatisticsModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsModuleFactory.swift; sourceTree = "<group>"; };
+		6759BC3F2ED2030500F277A1 /* GoalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalManager.swift; sourceTree = "<group>"; };
+		6759BC412ED2033F00F277A1 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
+		6759BC432ED2040100F277A1 /* WorkoutEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutEntity+Mapping.swift"; sourceTree = "<group>"; };
 		6778BA272EC6514B009C02EF /* FitnessApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitnessApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		678296412EC8E2680056D7AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		678296422EC8E2680056D7AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -227,6 +233,9 @@
 				678296472EC8E2680056D7AA /* CoreDataEntities.swift */,
 				678296482EC8E2680056D7AA /* CoreDataManager.swift */,
 				678296572EC8E2680056D7AA /* Workout.swift */,
+				6759BC3F2ED2030500F277A1 /* GoalManager.swift */,
+				6759BC412ED2033F00F277A1 /* WorkoutManager.swift */,
+				6759BC432ED2040100F277A1 /* WorkoutEntity+Mapping.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -360,6 +369,7 @@
 				678296862EC902360056D7AA /* WgerExerciseTableViewCell.swift in Sources */,
 				678296892EC9040B0056D7AA /* WgerCategoryCollectionViewCell.swift in Sources */,
 				678296882EC9040A0056D7AA /* WgerCache.swift in Sources */,
+				6759BC442ED2040100F277A1 /* WorkoutEntity+Mapping.swift in Sources */,
 				675807522ECF6DB300BBC172 /* StatiscticsModel.swift in Sources */,
 				6782965F2EC8E2680056D7AA /* AppDelegate.swift in Sources */,
 				678296602EC8E2680056D7AA /* SceneDelegate.swift in Sources */,
@@ -375,6 +385,7 @@
 				6759BC392ED0B41200F277A1 /* WgerExercisesViewModel.swift in Sources */,
 				5EEE432D7C964AD0B25BBF8764DBCC73 /* BestResultChartView.swift in Sources */,
 				678296692EC8E2680056D7AA /* FitnessApp.xcdatamodeld in Sources */,
+				6759BC422ED2033F00F277A1 /* WorkoutManager.swift in Sources */,
 				6782966A2EC8E2680056D7AA /* HomeViewController.swift in Sources */,
 				6759BC3E2ED0DE0500F277A1 /* StatisticsModuleFactory.swift in Sources */,
 				6782966B2EC8E2680056D7AA /* LocalExercise.swift in Sources */,
@@ -387,6 +398,7 @@
 				678296702EC8E2680056D7AA /* Workout.swift in Sources */,
 				678296712EC8E2680056D7AA /* WorkoutSetTableViewCell.swift in Sources */,
 				678296722EC8E2680056D7AA /* WorkoutViewController.swift in Sources */,
+				6759BC402ED2030500F277A1 /* GoalManager.swift in Sources */,
 				675807452ECA74F900BBC172 /* UIView+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
