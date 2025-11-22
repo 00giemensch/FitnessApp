@@ -17,14 +17,12 @@ protocol CoreDataManagerProtocol {
 }
 
 final class CoreDataManager: CoreDataManagerProtocol {
-    // Приватный контекст - никто не может его напрямую использовать
     private let context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
         self.context = context
     }
     
-    // Конкретные методы - только то, что нужно
     func save() {
         guard context.hasChanges else { return }
         do {
@@ -43,7 +41,6 @@ final class CoreDataManager: CoreDataManagerProtocol {
         return NSEntityDescription.insertNewObject(forEntityName: entityName, into: context) as! T
     }
     
-    // Приватный метод для внутреннего использования
     func fetch<T: NSManagedObject>(_ request: NSFetchRequest<T>) throws -> [T] {
         return try context.fetch(request)
     }

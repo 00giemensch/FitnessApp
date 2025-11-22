@@ -9,16 +9,13 @@ import Foundation
 
 final class WgerExerciseDetailViewModel {
     
-    // MARK: - Outputs
     var onDataLoaded: (() -> Void)?
     var onLoadingStateChanged: ((Bool) -> Void)?
     var onError: ((Error) -> Void)?
     
-    // MARK: - Dependencies
     private let exerciseId: Int
     private let service: WgerServiceProtocol
     
-    // MARK: - State
     private(set) var exercise: WgerExercise?
     
     init(exerciseId: Int, service: WgerServiceProtocol) {
@@ -26,7 +23,6 @@ final class WgerExerciseDetailViewModel {
         self.service = service
     }
     
-    // MARK: - Inputs
     func loadExerciseDetails() {
         onLoadingStateChanged?(true)
         service.fetchExerciseDetail(exerciseId: exerciseId) { [weak self] result in
@@ -43,7 +39,6 @@ final class WgerExerciseDetailViewModel {
         }
     }
     
-    // MARK: - Computed properties for UI
     var title: String {
         exercise?.name ?? "Упражнение"
     }

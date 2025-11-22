@@ -37,12 +37,10 @@ extension WorkoutEntity {
         self.exerciseName = workout.exerciseName
         self.date = workout.date
         
-        // Удаляем старые подходы через менеджер
         if let oldSets = self.sets as? Set<WorkoutSetEntity> {
             oldSets.forEach { coreDataManager.delete($0) }
         }
         
-        // Создаём новые через менеджер
         let newSets = workout.sets.map { workoutSet -> WorkoutSetEntity in
             let setEntity = coreDataManager.create(WorkoutSetEntity.self)
             setEntity.repetitions = Int32(workoutSet.repetitions)

@@ -82,7 +82,6 @@ final class AppCoordinator: IAppCoordinator {
         self.wgerService = wgerService
         self.coreDataManager = coreDataManager
         
-        // Создаём менеджеры с общим CoreDataManager
         self.workoutManager = workoutManager ?? WorkoutManager(coreDataManager: coreDataManager)
         self.goalManager = goalManager ?? GoalManager(coreDataManager: coreDataManager)
         
@@ -107,7 +106,6 @@ final class AppCoordinator: IAppCoordinator {
         homeNavigationController.setViewControllers([homeVC], animated: false)
         homeNavigationController.tabBarItem = UITabBarItem(title: "Главная", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         
-        // Инжектируем менеджеры в StatisticsViewModel
         let statisticsVC = StatisticsModuleFactory.makeStatisticsModule(
             coordinator: self,
             workoutManager: workoutManager,
