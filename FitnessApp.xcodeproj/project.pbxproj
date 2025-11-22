@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		5EEE432D7C964AD0B25BBF8764DBCC73 /* BestResultChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */; };
+		67354EEF2ED22E8C00C51B03 /* WorkoutLocalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67354EEE2ED22E8C00C51B03 /* WorkoutLocalRepository.swift */; };
+		67354EF12ED22EAB00C51B03 /* Goal Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67354EF02ED22EAB00C51B03 /* Goal Repository.swift */; };
+		67354EF32ED22EF000C51B03 /* WorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67354EF22ED22EF000C51B03 /* WorkoutViewModel.swift */; };
 		675807452ECA74F900BBC172 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675807442ECA74F900BBC172 /* UIView+.swift */; };
 		675807482ECE5A2C00BBC172 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675807472ECE5A2C00BBC172 /* AppCoordinator.swift */; };
 		6758074B2ECE64CB00BBC172 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6758074A2ECE64CB00BBC172 /* HomeViewModel.swift */; };
@@ -51,6 +54,9 @@
 
 /* Begin PBXFileReference section */
 		5EEE432D7C964AD0B25BBF8764DBCC74 /* BestResultChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestResultChartView.swift; sourceTree = "<group>"; };
+		67354EEE2ED22E8C00C51B03 /* WorkoutLocalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutLocalRepository.swift; sourceTree = "<group>"; };
+		67354EF02ED22EAB00C51B03 /* Goal Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Goal Repository.swift"; sourceTree = "<group>"; };
+		67354EF22ED22EF000C51B03 /* WorkoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutViewModel.swift; sourceTree = "<group>"; };
 		675807442ECA74F900BBC172 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		675807472ECE5A2C00BBC172 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		6758074A2ECE64CB00BBC172 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -236,6 +242,8 @@
 				6759BC3F2ED2030500F277A1 /* GoalManager.swift */,
 				6759BC412ED2033F00F277A1 /* WorkoutManager.swift */,
 				6759BC432ED2040100F277A1 /* WorkoutEntity+Mapping.swift */,
+				67354EEE2ED22E8C00C51B03 /* WorkoutLocalRepository.swift */,
+				67354EF02ED22EAB00C51B03 /* Goal Repository.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -264,6 +272,7 @@
 			children = (
 				678296582EC8E2680056D7AA /* WorkoutSetTableViewCell.swift */,
 				678296592EC8E2680056D7AA /* WorkoutViewController.swift */,
+				67354EF22ED22EF000C51B03 /* WorkoutViewModel.swift */,
 			);
 			path = TrainScreen;
 			sourceTree = "<group>";
@@ -389,13 +398,16 @@
 				6782966A2EC8E2680056D7AA /* HomeViewController.swift in Sources */,
 				6759BC3E2ED0DE0500F277A1 /* StatisticsModuleFactory.swift in Sources */,
 				6782966B2EC8E2680056D7AA /* LocalExercise.swift in Sources */,
+				67354EEF2ED22E8C00C51B03 /* WorkoutLocalRepository.swift in Sources */,
 				6782966C2EC8E2680056D7AA /* LocalExercisesViewController.swift in Sources */,
 				6782966D2EC8E2680056D7AA /* StatisticsTableViewCell.swift in Sources */,
 				6759BC3B2ED0B57B00F277A1 /* LocalExercisesViewModel.swift in Sources */,
+				67354EF32ED22EF000C51B03 /* WorkoutViewModel.swift in Sources */,
 				6759BC342ED0A99300F277A1 /* WgerExerciseDetailViewModel.swift in Sources */,
 				6758074D2ECE747200BBC172 /* StatisticsExerciseCell.swift in Sources */,
 				6782966E2EC8E2680056D7AA /* StatisticsViewController.swift in Sources */,
 				678296702EC8E2680056D7AA /* Workout.swift in Sources */,
+				67354EF12ED22EAB00C51B03 /* Goal Repository.swift in Sources */,
 				678296712EC8E2680056D7AA /* WorkoutSetTableViewCell.swift in Sources */,
 				678296722EC8E2680056D7AA /* WorkoutViewController.swift in Sources */,
 				6759BC402ED2030500F277A1 /* GoalManager.swift in Sources */,

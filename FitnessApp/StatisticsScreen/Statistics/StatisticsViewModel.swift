@@ -9,26 +9,26 @@ import Foundation
 
 final class StatisticsViewModel {
     private let coordinator: IAppCoordinator
-    private let workoutManager: WorkoutManagerProtocol
-    private let goalManager: GoalManagerProtocol
+    private let workoutRepository: WorkoutRepositoryProtocol
+    private let goalRepository: GoalRepositoryProtocol
 
     private(set) var exercises: [ExerciseStatsItem] = []
 
     init(
         coordinator: IAppCoordinator,
-        workoutManager: WorkoutManagerProtocol,
-        goalManager: GoalManagerProtocol
+        workoutRepository: WorkoutRepositoryProtocol,
+        goalRepository: GoalRepositoryProtocol
     ) {
         self.coordinator = coordinator
-        self.workoutManager = workoutManager
-        self.goalManager = goalManager
+        self.workoutRepository = workoutRepository
+        self.goalRepository = goalRepository
     }
 
     func loadWorkouts(
         onEmptyState: @escaping (Bool) -> Void,
         onCompletion: @escaping () -> Void
     ) {
-        let allWorkouts = workoutManager.getAllWorkouts()
+        let allWorkouts = workoutRepository.getAllWorkouts()
         let exerciseIds = Set(allWorkouts.map { $0.exerciseId })
         exercises = exerciseIds.compactMap { exerciseId in
             guard let workout = allWorkouts.first(where: { $0.exerciseId == exerciseId }) else { return nil }
@@ -49,8 +49,8 @@ final class StatisticsViewModel {
     func deleteExercise(at index: Int) {
         guard index >= 0, index < exercises.count else { return }
         let exercise = exercises[index]
-        workoutManager.deleteWorkoutsForExercise(exerciseId: exercise.exerciseId)
-        goalManager.deleteGoalsForExercise(exerciseId: exercise.exerciseId)
+        workoutRepository.deleteWorkoutsForExercise(exerciseId: exercise.exerciseId)
+        goalRepository.deleteGoalsForExercise(exerciseId: exercise.exerciseId)
         exercises.remove(at: index)
     }
 

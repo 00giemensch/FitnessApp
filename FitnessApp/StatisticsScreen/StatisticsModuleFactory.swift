@@ -3,13 +3,13 @@ import UIKit
 struct StatisticsModuleFactory {
     static func makeStatisticsModule(
         coordinator: IAppCoordinator,
-        workoutManager: WorkoutManagerProtocol,
-        goalManager: GoalManagerProtocol
+        workoutRepository: WorkoutRepositoryProtocol,
+        goalRepository: GoalRepositoryProtocol
     ) -> UIViewController {
         let viewModel = StatisticsViewModel(
             coordinator: coordinator,
-            workoutManager: workoutManager,
-            goalManager: goalManager
+            workoutRepository: workoutRepository,
+            goalRepository: goalRepository
         )
         let controller = StatisticsViewController(viewModel: viewModel)
         controller.coordinator = coordinator

@@ -7,16 +7,9 @@
 
 import UIKit
 
-struct WorkoutSetData {
-    var repetitions: Int?
-}
-
 class WorkoutViewController: UIViewController {
     
-    private let exerciseId: String
-    private let exerciseName: String
-    private let workoutManager: WorkoutManagerProtocol
-    private var sets: [WorkoutSetData] = []
+    private let viewModel: WorkoutViewModel
     private var setsStackView: UIStackView!
     
     private let scrollView: UIScrollView = {
@@ -72,10 +65,8 @@ class WorkoutViewController: UIViewController {
         return button
     }()
     
-    init(exerciseId: String, exerciseName: String, workoutManager: WorkoutManagerProtocol) {
-        self.exerciseId = exerciseId
-        self.exerciseName = exerciseName
-        self.workoutManager = workoutManager
+    init(viewModel: WorkoutViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -98,7 +89,7 @@ class WorkoutViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationController?.setNavigationBarHidden(true, animated: false)
         
-        exerciseNameLabel.text = exerciseName
+        exerciseNameLabel.text = viewModel.exerciseName
         
         setsStackView = UIStackView()
         setsStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -163,17 +154,15 @@ class WorkoutViewController: UIViewController {
     }
     
     @objc private func addSetTapped() {
-        if let lastSet = sets.last, lastSet.repetitions == nil {
+        if !viewModel.addSet() {
             showError(message: "Введите хотя бы одно повторение для прошлого подхода")
             return
         }
-        
-        sets.append(WorkoutSetData(repetitions: nil))
         updateSetsUI()
     }
     
     @objc private func completeWorkoutTapped() {
-        let validSets = sets.filter { $0.repetitions != nil && $0.repetitions! > 0 }
+        let validSets = viewModel.getValidSets()
         
         if validSets.isEmpty {
             navigationController?.popToRootViewController(animated: true)
@@ -187,7 +176,8 @@ class WorkoutViewController: UIViewController {
         )
         
         alert.addAction(UIAlertAction(title: "Да", style: .default) { [weak self] _ in
-            self?.saveWorkout()
+            self?.viewModel.saveWorkout()
+            self?.navigationController?.popToRootViewController(animated: true)
         })
         
         alert.addAction(UIAlertAction(title: "Нет", style: .cancel) { [weak self] _ in
@@ -197,54 +187,10 @@ class WorkoutViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    private func saveWorkout() {
-        let validSets = sets.compactMap { set -> WorkoutSet? in
-            guard let reps = set.repetitions, reps > 0 else { return nil }
-            return WorkoutSet(repetitions: reps, date: Date())
-        }
-        
-        guard !validSets.isEmpty else {
-            navigationController?.popToRootViewController(animated: true)
-            return
-        }
-        
-        let allWorkouts = workoutManager.getAllWorkouts()
-        
-        if let existingWorkout = allWorkouts.first(where: { workout in
-            workout.exerciseId == exerciseId &&
-            Calendar.current.isDate(workout.date, inSameDayAs: Date())
-        }) {
-            var allSets = existingWorkout.sets
-            allSets.append(contentsOf: validSets)
-            
-            let updatedWorkout = Workout(
-                id: existingWorkout.id,
-                exerciseId: existingWorkout.exerciseId,
-                exerciseName: existingWorkout.exerciseName,
-                sets: allSets,
-                date: existingWorkout.date
-            )
-            
-            workoutManager.saveWorkout(updatedWorkout)
-        } else {
-            let workout = Workout(
-                id: UUID().uuidString,
-                exerciseId: exerciseId,
-                exerciseName: exerciseName,
-                sets: validSets,
-                date: Date()
-            )
-            
-            workoutManager.saveWorkout(workout)
-        }
-        
-        navigationController?.popToRootViewController(animated: true)
-    }
-    
     private func updateSetsUI() {
         setsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        for (index, set) in sets.enumerated() {
+        for (index, set) in viewModel.sets.enumerated() {
             let setView = createSetView(setNumber: index + 1, set: set)
             setsStackView.addArrangedSubview(setView)
         }
@@ -326,7 +272,7 @@ class WorkoutViewController: UIViewController {
         alert.addTextField { [weak self] textField in
             textField.keyboardType = .numberPad
             textField.placeholder = "0"
-            if let currentReps = self?.sets[setIndex].repetitions {
+            if let currentReps = self?.viewModel.sets[setIndex].repetitions {
                 textField.text = "\(currentReps)"
             }
         }
@@ -340,10 +286,8 @@ class WorkoutViewController: UIViewController {
                 return
             }
             
-            if setIndex < self.sets.count {
-                self.sets[setIndex].repetitions = value
-                self.updateSetsUI()
-            }
+            self.viewModel.updateSetRepetitions(at: setIndex, repetitions: value)
+            self.updateSetsUI()
         }
         
         alert.addAction(cancelAction)
