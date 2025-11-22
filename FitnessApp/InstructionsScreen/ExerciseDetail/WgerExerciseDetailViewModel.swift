@@ -21,7 +21,7 @@ final class WgerExerciseDetailViewModel {
     // MARK: - State
     private(set) var exercise: WgerExercise?
     
-    init(exerciseId: Int, service: WgerServiceProtocol = WgerService.shared) {
+    init(exerciseId: Int, service: WgerServiceProtocol) {
         self.exerciseId = exerciseId
         self.service = service
     }

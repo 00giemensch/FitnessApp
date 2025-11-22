@@ -9,15 +9,15 @@ import Foundation
 
 final class StatisticsViewModel {
     private let coordinator: IAppCoordinator
-    private let workoutManager: WorkoutManager
-    private let goalManager: GoalManager
+    private let workoutManager: WorkoutManagerProtocol
+    private let goalManager: GoalManagerProtocol
 
     private(set) var exercises: [ExerciseStatsItem] = []
 
     init(
         coordinator: IAppCoordinator,
-        workoutManager: WorkoutManager = .shared,
-        goalManager: GoalManager = .shared
+        workoutManager: WorkoutManagerProtocol,
+        goalManager: GoalManagerProtocol
     ) {
         self.coordinator = coordinator
         self.workoutManager = workoutManager

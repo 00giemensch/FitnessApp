@@ -62,7 +62,7 @@ class WgerExercisesViewController: UIViewController {
         return indicator
     }()
     
-    init(viewModel: WgerExercisesViewModel = WgerExercisesViewModel()) {
+    init(viewModel: WgerExercisesViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

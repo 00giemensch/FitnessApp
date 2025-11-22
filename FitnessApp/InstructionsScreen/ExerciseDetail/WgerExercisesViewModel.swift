@@ -18,7 +18,7 @@ final class WgerExercisesViewModel {
         }
     }
 
-    init(service: WgerServiceProtocol = WgerService.shared) {
+    init(service: WgerServiceProtocol) {
         self.service = service
     }
 

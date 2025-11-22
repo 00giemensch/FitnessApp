@@ -70,18 +70,21 @@ extension WorkoutEntity {
         )
     }
     
-    func update(from workout: Workout) {
+    // Теперь принимает CoreDataManager вместо прямого доступа к context
+    func update(from workout: Workout, coreDataManager: CoreDataManagerProtocol) {
         self.id = workout.id
         self.exerciseId = workout.exerciseId
         self.exerciseName = workout.exerciseName
         self.date = workout.date
         
+        // Удаляем старые подходы через менеджер
         if let oldSets = self.sets as? Set<WorkoutSetEntity> {
-            oldSets.forEach { CoreDataManager.shared.context.delete($0) }
+            oldSets.forEach { coreDataManager.delete($0) }
         }
         
+        // Создаём новые через менеджер
         let newSets = workout.sets.map { workoutSet -> WorkoutSetEntity in
-            let setEntity = WorkoutSetEntity(context: CoreDataManager.shared.context)
+            let setEntity = coreDataManager.create(WorkoutSetEntity.self)
             setEntity.repetitions = Int32(workoutSet.repetitions)
             setEntity.date = workoutSet.date
             return setEntity
@@ -108,41 +111,47 @@ extension WorkoutGoalEntity {
     }
 }
 
-class WorkoutManager {
-    static let shared = WorkoutManager()
+protocol WorkoutManagerProtocol {
+    func saveWorkout(_ workout: Workout)
+    func getAllWorkouts() -> [Workout]
+    func getWorkoutsForExercise(exerciseId: String) -> [Workout]
+    func deleteWorkoutsForExercise(exerciseId: String)
+}
+
+final class WorkoutManager: WorkoutManagerProtocol {
+    private let coreDataManager: CoreDataManagerProtocol
     
-    private init() {}
+    init(coreDataManager: CoreDataManagerProtocol) {
+        self.coreDataManager = coreDataManager
+    }
     
     func saveWorkout(_ workout: Workout) {
-        let context = CoreDataManager.shared.context
-        
         let fetchRequest: NSFetchRequest<WorkoutEntity> = WorkoutEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id == %@", workout.id)
         
         do {
-            let results = try context.fetch(fetchRequest)
+            let results = try coreDataManager.fetch(fetchRequest)
             let workoutEntity: WorkoutEntity
             
             if let existing = results.first {
                 workoutEntity = existing
             } else {
-                workoutEntity = WorkoutEntity(context: context)
+                workoutEntity = coreDataManager.create(WorkoutEntity.self)
             }
             
-            workoutEntity.update(from: workout)
-            CoreDataManager.shared.saveContext()
+            workoutEntity.update(from: workout, coreDataManager: coreDataManager)
+            coreDataManager.save()
         } catch {
             print("Error saving workout: \(error)")
         }
     }
     
     func getAllWorkouts() -> [Workout] {
-        let context = CoreDataManager.shared.context
         let fetchRequest: NSFetchRequest<WorkoutEntity> = WorkoutEntity.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         
         do {
-            let entities = try context.fetch(fetchRequest)
+            let entities = try coreDataManager.fetch(fetchRequest)
             return entities.compactMap { $0.toWorkout() }
         } catch {
             print("Error fetching workouts: \(error)")
@@ -151,13 +160,12 @@ class WorkoutManager {
     }
     
     func getWorkoutsForExercise(exerciseId: String) -> [Workout] {
-        let context = CoreDataManager.shared.context
         let fetchRequest: NSFetchRequest<WorkoutEntity> = WorkoutEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "exerciseId == %@", exerciseId)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         
         do {
-            let entities = try context.fetch(fetchRequest)
+            let entities = try coreDataManager.fetch(fetchRequest)
             return entities.compactMap { $0.toWorkout() }
         } catch {
             print("Error fetching workouts for exercise: \(error)")
@@ -166,16 +174,15 @@ class WorkoutManager {
     }
     
     func deleteWorkoutsForExercise(exerciseId: String) {
-        let context = CoreDataManager.shared.context
         let fetchRequest: NSFetchRequest<WorkoutEntity> = WorkoutEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "exerciseId == %@", exerciseId)
         
         do {
-            let entities = try context.fetch(fetchRequest)
+            let entities = try coreDataManager.fetch(fetchRequest)
             for entity in entities {
-                context.delete(entity)
+                coreDataManager.delete(entity)
             }
-            CoreDataManager.shared.saveContext()
+            coreDataManager.save()
         } catch {
             print("Error deleting workouts for exercise: \(error)")
         }
@@ -193,42 +200,49 @@ struct WorkoutGoal: Codable {
     let value: Int
 }
 
-class GoalManager {
-    static let shared = GoalManager()
+// Workout.swift
+protocol GoalManagerProtocol {
+    func saveGoal(_ goal: WorkoutGoal)
+    func getGoal(exerciseId: String, type: GoalType) -> WorkoutGoal?
+    func getAllGoals(exerciseId: String) -> [WorkoutGoal]
+    func deleteGoalsForExercise(exerciseId: String)
+}
+
+final class GoalManager: GoalManagerProtocol {
+    private let coreDataManager: CoreDataManagerProtocol
     
-    private init() {}
+    init(coreDataManager: CoreDataManagerProtocol) {
+        self.coreDataManager = coreDataManager
+    }
     
     func saveGoal(_ goal: WorkoutGoal) {
-        let context = CoreDataManager.shared.context
-        
         let fetchRequest: NSFetchRequest<WorkoutGoalEntity> = WorkoutGoalEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "exerciseId == %@ AND type == %@", goal.exerciseId, goal.type.rawValue)
         
         do {
-            let results = try context.fetch(fetchRequest)
+            let results = try coreDataManager.fetch(fetchRequest)
             let goalEntity: WorkoutGoalEntity
             
             if let existing = results.first {
                 goalEntity = existing
             } else {
-                goalEntity = WorkoutGoalEntity(context: context)
+                goalEntity = coreDataManager.create(WorkoutGoalEntity.self)
             }
             
             goalEntity.update(from: goal)
-            CoreDataManager.shared.saveContext()
+            coreDataManager.save()
         } catch {
             print("Error saving goal: \(error)")
         }
     }
     
     func getGoal(exerciseId: String, type: GoalType) -> WorkoutGoal? {
-        let context = CoreDataManager.shared.context
         let fetchRequest: NSFetchRequest<WorkoutGoalEntity> = WorkoutGoalEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "exerciseId == %@ AND type == %@", exerciseId, type.rawValue)
         fetchRequest.fetchLimit = 1
         
         do {
-            let results = try context.fetch(fetchRequest)
+            let results = try coreDataManager.fetch(fetchRequest)
             return results.first?.toWorkoutGoal()
         } catch {
             print("Error fetching goal: \(error)")
@@ -237,12 +251,11 @@ class GoalManager {
     }
     
     func getAllGoals(exerciseId: String) -> [WorkoutGoal] {
-        let context = CoreDataManager.shared.context
         let fetchRequest: NSFetchRequest<WorkoutGoalEntity> = WorkoutGoalEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "exerciseId == %@", exerciseId)
         
         do {
-            let entities = try context.fetch(fetchRequest)
+            let entities = try coreDataManager.fetch(fetchRequest)
             return entities.compactMap { $0.toWorkoutGoal() }
         } catch {
             print("Error fetching goals: \(error)")
@@ -251,16 +264,15 @@ class GoalManager {
     }
     
     func deleteGoalsForExercise(exerciseId: String) {
-        let context = CoreDataManager.shared.context
         let fetchRequest: NSFetchRequest<WorkoutGoalEntity> = WorkoutGoalEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "exerciseId == %@", exerciseId)
         
         do {
-            let entities = try context.fetch(fetchRequest)
+            let entities = try coreDataManager.fetch(fetchRequest)
             for entity in entities {
-                context.delete(entity)
+                coreDataManager.delete(entity)
             }
-            CoreDataManager.shared.saveContext()
+            coreDataManager.save()
         } catch {
             print("Error deleting goals for exercise: \(error)")
         }

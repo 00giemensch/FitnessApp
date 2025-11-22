@@ -18,6 +18,9 @@ protocol IAppCoordinator: AnyObject {
 final class AppCoordinator: IAppCoordinator {
 
     private let wgerService: WgerServiceProtocol
+    private let workoutManager: WorkoutManagerProtocol
+    private let goalManager: GoalManagerProtocol
+    private let coreDataManager: CoreDataManagerProtocol
     
     private weak var window: UIWindow?
     
@@ -36,19 +39,27 @@ final class AppCoordinator: IAppCoordinator {
     }
     
     func showWorkout(exerciseId: String, exerciseName: String) {
-        let workoutVC = WorkoutViewController(exerciseId: exerciseId, exerciseName: exerciseName)
+        let workoutVC = WorkoutViewController(
+            exerciseId: exerciseId,
+            exerciseName: exerciseName,
+            workoutManager: workoutManager
+        )
         currentNavigationController?.pushViewController(workoutVC, animated: true)
     }
     
     func showExerciseStatistics(exerciseId: String) {
-        let statisticsVC = ExerciseStatisticsViewController(exerciseId: exerciseId)
+        let statisticsVC = ExerciseStatisticsViewController(
+            exerciseId: exerciseId,
+            workoutManager: workoutManager,
+            goalManager: goalManager
+        )
         statisticsVC.coordinator = self
         currentNavigationController?.pushViewController(statisticsVC, animated: true)
     }
     
     func showExerciseDetails(exerciseId: Int) {
         let viewModel = WgerExerciseDetailViewModel(exerciseId: exerciseId, service: wgerService)
-        let detailVC = WgerExerciseDetailViewController(exerciseId: exerciseId, viewModel: viewModel)
+        let detailVC = WgerExerciseDetailViewController(exerciseId: exerciseId, viewModel: viewModel, service: wgerService)
         currentNavigationController?.pushViewController(detailVC, animated: true)
     }
     
@@ -62,13 +73,24 @@ final class AppCoordinator: IAppCoordinator {
     let statiscticsNavigationController = UINavigationController()
     let exercisesNavigationController = UINavigationController()
     
-    public init(service: WgerServiceProtocol = WgerService()) {
+    public init(
+        wgerService: WgerServiceProtocol,
+        coreDataManager: CoreDataManagerProtocol,
+        workoutManager: WorkoutManagerProtocol? = nil,
+        goalManager: GoalManagerProtocol? = nil
+    ) {
+        self.wgerService = wgerService
+        self.coreDataManager = coreDataManager
+        
+        // Создаём менеджеры с общим CoreDataManager
+        self.workoutManager = workoutManager ?? WorkoutManager(coreDataManager: coreDataManager)
+        self.goalManager = goalManager ?? GoalManager(coreDataManager: coreDataManager)
+        
         tabBarController.viewControllers = [
             homeNavigationController,
             exercisesNavigationController,
             statiscticsNavigationController
         ]
-        self.wgerService = service
     }
     
     func start(with window: UIWindow) {
@@ -85,7 +107,12 @@ final class AppCoordinator: IAppCoordinator {
         homeNavigationController.setViewControllers([homeVC], animated: false)
         homeNavigationController.tabBarItem = UITabBarItem(title: "Главная", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         
-        let statisticsVC = StatisticsModuleFactory.makeStatisticsModule(coordinator: self)
+        // Инжектируем менеджеры в StatisticsViewModel
+        let statisticsVC = StatisticsModuleFactory.makeStatisticsModule(
+            coordinator: self,
+            workoutManager: workoutManager,
+            goalManager: goalManager
+        )
         statiscticsNavigationController.setViewControllers([statisticsVC], animated: false)
         statiscticsNavigationController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(systemName: "chart.bar"), selectedImage: UIImage(systemName: "chart.bar.fill"))
         
