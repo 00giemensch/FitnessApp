@@ -24,7 +24,6 @@ final class WgerService: WgerServiceProtocol {
         self.cache = cache
     }
 
-    // MARK: - Helpers
     private func performRequest<T: Decodable>(url: URL, completion: @escaping (Result<T, Error>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -59,7 +58,6 @@ final class WgerService: WgerServiceProtocol {
         }.resume()
     }
 
-    // MARK: - Public API
     func fetchExerciseCategories(completion: @escaping (Result<[WgerCategory], Error>) -> Void) {
         if let cached = cache.getCategories() {
             completion(.success(cached))

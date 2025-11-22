@@ -17,10 +17,10 @@ protocol IAppCoordinator: AnyObject {
 
 final class AppCoordinator: IAppCoordinator {
 
-    private let wgerService: WgerServiceProtocol
-    private let workoutManager: WorkoutManagerProtocol
-    private let goalManager: GoalManagerProtocol
-    private let coreDataManager: CoreDataManagerProtocol
+    private lazy var wgerService: WgerServiceProtocol = {
+        let wgerCache = WgerCache()
+        return WgerService(cache: wgerCache)
+    }()
     
     private weak var window: UIWindow?
     
@@ -39,19 +39,23 @@ final class AppCoordinator: IAppCoordinator {
     }
     
     func showWorkout(exerciseId: String, exerciseName: String) {
-        let workoutVC = WorkoutViewController(
+        let workoutRepository = WorkoutLocalRepository()
+        let viewModel = WorkoutViewModel(
             exerciseId: exerciseId,
             exerciseName: exerciseName,
-            workoutManager: workoutManager
+            workoutRepository: workoutRepository
         )
+        let workoutVC = WorkoutViewController(viewModel: viewModel)
         currentNavigationController?.pushViewController(workoutVC, animated: true)
     }
     
     func showExerciseStatistics(exerciseId: String) {
+        let workoutRepository = WorkoutLocalRepository()
+        let goalRepository = GoalLocalRepository()
         let statisticsVC = ExerciseStatisticsViewController(
             exerciseId: exerciseId,
-            workoutManager: workoutManager,
-            goalManager: goalManager
+            workoutRepository: workoutRepository,
+            goalRepository: goalRepository
         )
         statisticsVC.coordinator = self
         currentNavigationController?.pushViewController(statisticsVC, animated: true)
@@ -73,18 +77,7 @@ final class AppCoordinator: IAppCoordinator {
     let statiscticsNavigationController = UINavigationController()
     let exercisesNavigationController = UINavigationController()
     
-    public init(
-        wgerService: WgerServiceProtocol,
-        coreDataManager: CoreDataManagerProtocol,
-        workoutManager: WorkoutManagerProtocol? = nil,
-        goalManager: GoalManagerProtocol? = nil
-    ) {
-        self.wgerService = wgerService
-        self.coreDataManager = coreDataManager
-        
-        self.workoutManager = workoutManager ?? WorkoutManager(coreDataManager: coreDataManager)
-        self.goalManager = goalManager ?? GoalManager(coreDataManager: coreDataManager)
-        
+    public init() {
         tabBarController.viewControllers = [
             homeNavigationController,
             exercisesNavigationController,
@@ -106,10 +99,12 @@ final class AppCoordinator: IAppCoordinator {
         homeNavigationController.setViewControllers([homeVC], animated: false)
         homeNavigationController.tabBarItem = UITabBarItem(title: "Главная", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         
+        let workoutRepository = WorkoutLocalRepository()
+        let goalRepository = GoalLocalRepository()
         let statisticsVC = StatisticsModuleFactory.makeStatisticsModule(
             coordinator: self,
-            workoutManager: workoutManager,
-            goalManager: goalManager
+            workoutRepository: workoutRepository,
+            goalRepository: goalRepository
         )
         statiscticsNavigationController.setViewControllers([statisticsVC], animated: false)
         statiscticsNavigationController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(systemName: "chart.bar"), selectedImage: UIImage(systemName: "chart.bar.fill"))

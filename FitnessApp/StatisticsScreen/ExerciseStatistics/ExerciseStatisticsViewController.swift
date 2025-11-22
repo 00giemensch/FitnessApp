@@ -12,8 +12,8 @@ class ExerciseStatisticsViewController: UIViewController {
     weak var coordinator: IAppCoordinator?
     
     private let exerciseId: String
-    private let workoutManager: WorkoutManagerProtocol
-    private let goalManager: GoalManagerProtocol
+    private let workoutRepository: WorkoutRepositoryProtocol
+    private let goalRepository: GoalRepositoryProtocol
     private var workouts: [Workout] = []
     
     private let scrollView: UIScrollView = {
@@ -91,12 +91,12 @@ class ExerciseStatisticsViewController: UIViewController {
     
     init(
         exerciseId: String,
-        workoutManager: WorkoutManagerProtocol,
-        goalManager: GoalManagerProtocol
+        workoutRepository: WorkoutRepositoryProtocol,
+        goalRepository: GoalRepositoryProtocol
     ) {
         self.exerciseId = exerciseId
-        self.workoutManager = workoutManager
-        self.goalManager = goalManager
+        self.workoutRepository = workoutRepository
+        self.goalRepository = goalRepository
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -181,7 +181,7 @@ class ExerciseStatisticsViewController: UIViewController {
     }
     
     private func loadData() {
-        workouts = workoutManager.getWorkoutsForExercise(exerciseId: exerciseId)
+        workouts = workoutRepository.getWorkoutsForExercise(exerciseId: exerciseId)
         
         if let firstWorkout = workouts.first {
             title = firstWorkout.exerciseName
@@ -196,8 +196,8 @@ class ExerciseStatisticsViewController: UIViewController {
         let totalReps = workouts.reduce(0) { $0 + $1.totalRepetitions }
         let bestResult = workouts.map { $0.bestResult }.max() ?? 0
         
-        let totalRepsGoal = goalManager.getGoal(exerciseId: exerciseId, type: .totalRepetitions)
-        let bestResultGoal = goalManager.getGoal(exerciseId: exerciseId, type: .bestResult)
+        let totalRepsGoal = goalRepository.getGoal(exerciseId: exerciseId, type: .totalRepetitions)
+        let bestResultGoal = goalRepository.getGoal(exerciseId: exerciseId, type: .bestResult)
         
         if let totalGoal = totalRepsGoal {
             totalRepetitionsLabel.text = "Общее кол-во повторений: \(totalReps)/\(totalGoal.value)"
@@ -288,7 +288,7 @@ class ExerciseStatisticsViewController: UIViewController {
             }
             
             let goal = WorkoutGoal(exerciseId: self.exerciseId, type: type, value: value)
-            self.goalManager.saveGoal(goal)
+            self.goalRepository.saveGoal(goal)
             self.loadData()
         })
         

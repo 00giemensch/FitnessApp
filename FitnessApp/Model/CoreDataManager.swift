@@ -17,11 +17,14 @@ protocol CoreDataManagerProtocol {
 }
 
 final class CoreDataManager: CoreDataManagerProtocol {
-    private let context: NSManagedObjectContext
+    static let shared = CoreDataManager()
     
-    init(context: NSManagedObjectContext) {
-        self.context = context
-    }
+    private lazy var context: NSManagedObjectContext = {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            fatalError("AppDelegate not found")
+        }
+        return appDelegate.persistentContainer.viewContext
+    }()
     
     func save() {
         guard context.hasChanges else { return }
